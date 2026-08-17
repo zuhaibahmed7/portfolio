@@ -1,0 +1,405 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  /* Offset anchor targets so the fixed navbar never covers section headings */
+  scroll-padding-top: 92px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  @apply bg-base font-sans text-muted antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(124, 58, 237, 0.45);
+  color: #f5f5f7;
+}
+
+/* Slim custom scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #22d3ee);
+  border-radius: 999px;
+  border: 2px solid #0a0a0f;
+}
+
+/* Visible keyboard focus ring (accessibility) */
+:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 16px;
+  z-index: 200;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #7c3aed;
+  color: #fff;
+  transition: top 0.25s ease;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable components
+--------------------------------------------------------------------------- */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  /* Gradient text used on hero name + section titles */
+  .text-gradient {
+    background: linear-gradient(92deg, #7c3aed 0%, #22d3ee 65%, #ec4899 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glassmorphism card surface */
+  .glass-card {
+    position: relative;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Glass card with an animated 1px gradient border (mask trick) */
+  .glass-card--border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.65), rgba(34, 211, 238, 0.4), rgba(236, 72, 153, 0.35));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gradient-accent px-7 py-3 font-display text-sm font-semibold text-white transition-all duration-300;
+    box-shadow: 0 0 30px -6px rgba(124, 58, 237, 0.55);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      0 0 45px -4px rgba(124, 58, 237, 0.7),
+      0 0 45px -8px rgba(34, 211, 238, 0.5);
+    filter: brightness(1.12);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-7 py-3 font-display text-sm font-semibold text-ink backdrop-blur transition-all duration-300;
+  }
+  .btn-ghost:hover {
+    @apply border-accent-cyan/60 text-accent-cyan;
+    box-shadow: 0 0 35px -8px rgba(34, 211, 238, 0.45);
+  }
+
+  /* Skill / tech pill */
+  .pill {
+    @apply rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-medium text-muted transition-colors duration-300;
+  }
+  .pill:hover {
+    @apply border-accent-violet/60 text-ink;
+  }
+
+  /* Nav link with animated gradient underline (scaleX from center on hover) */
+  .nav-link {
+    @apply relative px-1 py-2 text-sm font-medium text-muted transition-colors duration-300;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #7c3aed, #22d3ee);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+  .nav-link:hover {
+    @apply text-ink;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Soft glow aura blob placed behind sections */
+  .aura {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(100px);
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  /* Subtle blueprint grid overlay for depth */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+  }
+
+  /* Film-grain noise overlay */
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+
+  /* Typewriter caret */
+  .type-caret {
+    display: inline-block;
+    width: 3px;
+    margin-left: 4px;
+    background: linear-gradient(180deg, #22d3ee, #7c3aed);
+    animation: caret-blink 0.9s steps(1) infinite;
+  }
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type-caret {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Animated dashed connector for architecture diagrams (Feature #2).
+   The dashes "march" continuously via background-position; disabled for
+   reduced motion. Entry draw-in is handled by framer-motion (scaleX).
+--------------------------------------------------------------------------- */
+.connector {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.85) 0 5px,
+    transparent 5px 11px
+  );
+  animation: dash-march 0.9s linear infinite;
+}
+
+@keyframes dash-march {
+  to {
+    background-position: 22px 0;
+  }
+}
+
+/* Dashed bracket used for the ResearchPilot self-critique loop */
+.connector-vertical {
+  border: 2px dashed rgba(236, 72, 153, 0.55);
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connector {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FORM CONTROL COLORS — one explicit direction per theme so typed text is
+   always visible (fixes the invisible-input bug). Dark: #12121A field on the
+   dark theme with #F5F5F7 text. Light: white field with near-black text.
+   Placeholders get their own muted tone, distinct from typed text.
+--------------------------------------------------------------------------- */
+input,
+textarea,
+select {
+  color: #f5f5f7;
+  background-color: #12121a;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #71717a;
+  opacity: 1;
+}
+
+html.light {
+  color-scheme: light; /* native widgets (autofill, pickers) match the theme */
+}
+
+html.light input,
+html.light textarea,
+html.light select {
+  color: #18181b;
+  background-color: #ffffff;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #6b7280;
+}
+
+/* ---------------------------------------------------------------------------
+   LIGHT MODE (html.light) — toggled by the navbar sun/moon switch.
+   Strategy: the dark theme stays Tailwind-first; light mode remaps the
+   finite set of color utilities this site actually uses (audited via grep)
+   onto a soft off-white surface. Same glass structure, adjusted tints.
+--------------------------------------------------------------------------- */
+html.light body {
+  background: #f6f6f8;
+  color: #3f3f46;
+}
+
+html.light .bg-base { background-color: #f6f6f8 !important; }
+html.light .bg-surface { background-color: #ffffff !important; }
+html.light .bg-base\/70 { background-color: rgba(246, 246, 248, 0.75) !important; }
+html.light .bg-base\/60 { background-color: rgba(246, 246, 248, 0.65) !important; }
+html.light .bg-base\/50 { background-color: rgba(246, 246, 248, 0.55) !important; }
+html.light .bg-base\/80 { background-color: rgba(246, 246, 248, 0.85) !important; }
+html.light .bg-base\/95 { background-color: rgba(246, 246, 248, 0.95) !important; }
+html.light .bg-surface\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+html.light .bg-surface\/90 { background-color: rgba(255, 255, 255, 0.92) !important; }
+html.light .bg-surface\/80 { background-color: rgba(255, 255, 255, 0.88) !important; }
+
+html.light .text-ink { color: #18181b !important; }
+html.light .text-muted { color: #52525b !important; }
+html.light .text-muted\/60 { color: rgba(82, 82, 91, 0.65) !important; }
+
+/* White-alpha fills -> ink-alpha tints on light glass */
+html.light .bg-white\/[0\.04],
+html.light .bg-white\/[0\.05],
+html.light .bg-white\/5 { background-color: rgba(24, 24, 27, 0.045) !important; }
+html.light .bg-white\/[0\.06] { background-color: rgba(24, 24, 27, 0.06) !important; }
+html.light .bg-white\/10 { background-color: rgba(24, 24, 27, 0.09) !important; }
+html.light .hover\:bg-white\/[0\.04]:hover { background-color: rgba(24, 24, 27, 0.05) !important; }
+
+html.light .border-white\/10,
+html.light .border-white\/[0\.06],
+html.light .border-white\/[0\.07],
+html.light .border-white\/[0\.08] { border-color: rgba(24, 24, 27, 0.12) !important; }
+html.light .border-white\/30 { border-color: rgba(24, 24, 27, 0.3) !important; }
+
+/* Glass cards: white surface + hairline border, blur kept */
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(24, 24, 27, 0.1);
+}
+
+/* Photo caption gradient stops */
+html.light .from-base\/90 { --tw-gradient-from: rgba(246, 246, 248, 0.9) !important; }
+html.light .via-base\/30 { --tw-gradient-via: rgba(246, 246, 248, 0.35) !important; }
+
+/* Gradient text stays vivid in light mode — same violet + magenta stops as
+   dark mode. Only the cyan stop deepens to the same-hue neon teal because the
+   brand cyan (#22d3ee) is 1.7:1 on a light background and cannot pass WCAG.
+   Contrast on #f6f6f8: violet #7c3aed = 5.28:1 (AA normal), teal #0e7490 =
+   4.96:1 (AA normal), magenta #ec4899 = 3.27:1 (AA large — every gradient-text
+   usage on this site is a heading/display element at or above the large-text
+   threshold). */
+html.light .text-gradient {
+  background: linear-gradient(92deg, #7c3aed 0%, #0e7490 65%, #ec4899 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Hero vignette -> light haze */
+html.light .hero-vignette {
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(246, 246, 248, 0.5) 78%, #f6f6f8 100%) !important;
+}
+
+/* Aura blobs + grid + noise calm down in light mode */
+html.light .aura { opacity: 0.14; }
+html.light .grid-overlay {
+  background-image:
+    linear-gradient(rgba(24, 24, 27, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 24, 27, 0.05) 1px, transparent 1px);
+}
+html.light .noise-overlay { display: none; }
+
+/* Glows soften so they don't look like smudges on white */
+html.light .shadow-glow { box-shadow: 0 0 35px -10px rgba(109, 40, 217, 0.3); }
+html.light .shadow-glow-cyan { box-shadow: 0 0 35px -10px rgba(8, 145, 178, 0.28); }
+html.light .shadow-glow-pink { box-shadow: 0 0 35px -10px rgba(190, 24, 93, 0.26); }
+
+/* Selection + scrollbar match */
+html.light ::selection { background: rgba(109, 40, 217, 0.2); color: #18181b; }
+html.light ::-webkit-scrollbar-track { background: #f6f6f8; }
+html.light ::-webkit-scrollbar-thumb { border-color: #f6f6f8; }
+
+/* ---------------------------------------------------------------------------
+   PRINT STYLESHEET — Ctrl+P produces a light, resume-like document.
+   Interactive-only chrome is hidden via Tailwind `print:hidden` classes on
+   the components; these rules handle colors + decorative layers.
+--------------------------------------------------------------------------- */
+@media print {
+  .aura,
+  .grid-overlay,
+  .noise-overlay,
+  .hero-vignette,
+  .type-caret,
+  .connector,
+  .connector-vertical { display: none !important; }
+
+  body { background: #fff !important; color: #111 !important; }
+  .bg-base, .bg-surface,
+  .bg-base\/70, .bg-base\/60, .bg-base\/50, .bg-base\/80, .bg-base\/95,
+  .bg-surface\/95, .bg-surface\/90, .bg-surface\/80 { background: #fff !important; }
+
+  .text-ink { color: #111 !important; }
+  .text-muted { color: #333 !important; }
+  .text-muted\/60 { color: #444 !important; }
+  .text-gradient {
+    background: none !important;
+    color: #374151 !important;
+    -webkit-text-fill-color: #374151 !important;
+  }
+
+  .glass-card {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .glass-card--border-gradient::before { display: none !important; }
+
+  .bg-white\/\[0\.04\], .bg-white\/\[0\.05\], .bg-white\/\[0\.06\],
+  .bg-white\/5, .bg-white\/10 { background: #fff !important; }
+  .border-white\/10, .border-white\/\[0\.06\], .border-white\/\[0\.07\],
+  .border-white\/\[0\.08\], .border-white\/30 { border-color: #ddd !important; }
+
+  * { text-shadow: none !important; box-shadow: none !important; }
+}
