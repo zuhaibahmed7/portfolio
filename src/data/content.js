@@ -344,11 +344,12 @@ export const hackathons = [
   },
 ];
 
-// Testimonials (Feature #6) — ⚠️ FICTIONAL PLACEHOLDER NAMES.
-// The quotes are plausible placeholder text attributed to fictional-sounding
-// people. TODO: replace EACH entry (one at a time is fine) with REAL quotes
-// from actual teammates, professors or hackathon judges before publishing —
-// recruiters do check LinkedIn, and 2 genuine quotes beat 3 polished fakes.
+// Testimonials (Feature #6) — 1 REAL quote (Ghulam Mujtaba, LinkedIn) +
+// FICTIONAL PLACEHOLDER NAMES. The remaining quotes are plausible placeholder
+// text attributed to fictional-sounding people. TODO: replace EACH remaining
+// entry with REAL quotes from actual teammates, professors or hackathon
+// judges before publishing — recruiters do check LinkedIn, and 2 genuine
+// quotes beat 3 polished fakes.
 // ---------------------------------------------------------------------------
 export const testimonials = [
   {
@@ -360,10 +361,11 @@ export const testimonials = [
   },
   {
     quote:
-      'What stood out working with Zuhaib on the canteen system was how seriously he took the design patterns — not just making it work, but making it maintainable. He explained the Observer pattern to the rest of the team better than our textbook did.',
-    name: 'Hamza Sheikh',
-    role: 'Project Collaborator, Sukkur IBA University',
-    initials: 'HS',
+      'We worked together on our Software Design and Architecture project, developing a Canteen Order Queue Management System. Zuhaib demonstrated excellent teamwork, responsibility, and a strong understanding of software engineering concepts. He was a valuable and cooperative team member throughout the project. I confidently recommend Zuhaib for future academic and professional opportunities.',
+    name: 'Ghulam Mujtaba',
+    role: 'BSCS | AI & ML Enthusiast',
+    initials: 'GM',
+    avatar: '/recommenders/ghulam-mujtaba.png',
   },
   {
     quote:

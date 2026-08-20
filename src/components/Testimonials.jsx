@@ -29,8 +29,8 @@ export default function Testimonials() {
                 <Quote size={20} className="text-accent-pink/70" />
                 <blockquote className="flex-1 text-sm leading-relaxed text-muted">{t.quote}</blockquote>
                 <figcaption className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-accent-diag/25 font-display text-xs font-bold text-accent-cyan">
-                    {t.initials}
+                  <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-accent-diag/25 font-display text-xs font-bold text-accent-cyan">
+                    {t.avatar ? <img src={t.avatar} alt={t.name} className="h-full w-full object-cover" /> : t.initials}
                   </span>
                   <div>
                     <p className="font-display text-sm font-semibold text-ink">{t.name}</p>
