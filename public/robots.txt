@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://zuhaibahmed.ai/sitemap.xml
+Sitemap: https://zuhaibahmedportfolio.vercel.app/sitemap.xml

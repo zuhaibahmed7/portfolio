@@ -127,9 +127,9 @@ call is booked before that step.
 
 ### Manual steps (outside the coding tool)
 
-1. **Domain:** `zuhaibahmed.ai` is wired into og:url, og:image, robots.txt and sitemap.xml — remaining: point DNS at your host and deploy
-2. **Plausible Analytics:** ✅ snippet installed (`pa-7c4AyUE4RTcb1bqIGAjq.js`, keyed to zuhaibahmed.ai) with a CSP-safe event shim — after deploying, click "I've installed the script" in the Plausible dashboard to start seeing stats. Events tracked: Resume Downloaded, Chatbot Opened, Book Call Clicked, Project Demo Opened, Contact Form Submitted
-3. **Resend (contact form):** ✅ live — key in the gitignored `.env` (local) and verified end-to-end. For production: add `RESEND_API_KEY` (and optionally `RESEND_FROM`, `CONTACT_TO`) in Vercel → Settings → Environment Variables. Note: the default sender is Resend's `onboarding@resend.dev`, which can only deliver to your account's own email — verify `zuhaibahmed.ai` in Resend and set `RESEND_FROM=Portfolio Contact <hello@zuhaibahmed.ai>` to deliver to any inbox
+1. **Domain:** `zuhaibahmedportfolio.vercel.app` is the live URL (canonical, og:url, og:image, robots.txt and sitemap.xml). If you later add a custom domain, update these references.
+2. **Plausible Analytics:** ✅ snippet installed (`pa-7c4AyUE4RTcb1bqIGAjq.js`) with a CSP-safe event shim — after deploying, click "I've installed the script" in the Plausible dashboard to start seeing stats. Events tracked: Resume Downloaded, Chatbot Opened, Book Call Clicked, Project Demo Opened, Contact Form Submitted
+3. **Resend (contact form):** ✅ live — key in the gitignored `.env` (local) and verified end-to-end. For production: add `RESEND_API_KEY` (and optionally `RESEND_FROM`, `CONTACT_TO`) in Vercel → Settings → Environment Variables. Note: the default sender is Resend's `onboarding@resend.dev`, which can only deliver to your account's own email — verify a domain you own in Resend and set `RESEND_FROM=Portfolio Contact <hello@yourdomain.com>` to deliver to any inbox
 4. **After first deploy:** visit `https://yoursite.com/.env` and `/.git/config` — both must 404 (they will; verify anyway)
 5. **Verify HTTPS** is enforced by your host (Vercel/Netlify do this by default)
 6. In-memory rate limiting is per-serverless-instance — if you ever see real abuse, move the counter to a shared store (e.g. Upstash Redis)
