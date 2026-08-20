@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Download, Github, Layers, Linkedin, Mail, X, Youtube, Zap } from 'lucide-react';
+import { ArrowRight, ChevronDown, Download, Facebook, Github, Instagram, Layers, Linkedin, Mail, Twitter, X, Youtube, Zap } from 'lucide-react';
 import { profile, roles, socials } from '../data/content.js';
 import { useTypewriter } from '../hooks/useTypewriter.js';
 import { useView } from '../context/ViewContext.jsx';
@@ -148,6 +148,9 @@ export default function Hero() {
     { Icon: Github, href: socials.github.href, label: socials.github.label },
     { Icon: Linkedin, href: socials.linkedin.href, label: socials.linkedin.label },
     { Icon: Youtube, href: socials.youtube.href, label: socials.youtube.label },
+    { Icon: Instagram, href: socials.instagram.href, label: socials.instagram.label },
+    { Icon: Twitter, href: socials.x.href, label: socials.x.label },
+    { Icon: Facebook, href: socials.facebook.href, label: socials.facebook.label },
     { Icon: Mail, href: `mailto:${profile.email}`, label: 'Email' },
   ];
 

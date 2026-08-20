@@ -33,6 +33,12 @@ export const socials = {
     label: 'Hugging Face',
     href: 'https://huggingface.co/spaces/zuhaibahmed7/researchpilot',
   },
+  instagram: { label: 'Instagram', href: 'https://www.instagram.com/aiwithzuhaib/' },
+  x: { label: 'X (Twitter)', href: 'https://x.com/ZohaibAhmedMah2' },
+  facebook: {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/share/1C6SUjEjxX/',
+  },
 };
 
 export const education = {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Github, Linkedin, Mail, Phone, Send, Youtube } from 'lucide-react';
+import { Calendar, Facebook, Github, Instagram, Linkedin, Mail, Phone, Send, Twitter, Youtube } from 'lucide-react';
 import { profile, socials } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
 import { CopyEmailButton, Magnetic, Reveal, SectionHeading } from './ui.jsx';
@@ -83,6 +83,9 @@ export default function Contact() {
     { Icon: Github, label: 'GitHub', value: socials.github.href.replace('https://', ''), href: socials.github.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
     { Icon: Linkedin, label: 'LinkedIn', value: socials.linkedin.href.replace('https://www.', ''), href: socials.linkedin.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
     { Icon: Youtube, label: 'YouTube', value: '@aiwithzuhaib', href: socials.youtube.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
+    { Icon: Instagram, label: 'Instagram', value: '@aiwithzuhaib', href: socials.instagram.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
+    { Icon: Twitter, label: 'X (Twitter)', value: '@ZohaibAhmedMah2', href: socials.x.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
+    { Icon: Facebook, label: 'Facebook', value: 'Zuhaib Ahmed', href: socials.facebook.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
   ];
 
   return (

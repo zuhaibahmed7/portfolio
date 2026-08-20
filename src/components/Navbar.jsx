@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Github, Linkedin, Youtube, Menu, X, Download, Moon, Sun } from 'lucide-react';
+import { Facebook, Github, Instagram, Linkedin, Menu, X, Download, Moon, Sun, Twitter, Youtube } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme.js';
 import { socials } from '../data/content.js';
 import { track } from '../analytics.js';
@@ -23,6 +23,9 @@ function SocialLinks({ className = '' }) {
     { Icon: Github, href: socials.github.href, label: socials.github.label },
     { Icon: Linkedin, href: socials.linkedin.href, label: socials.linkedin.label },
     { Icon: Youtube, href: socials.youtube.href, label: socials.youtube.label },
+    { Icon: Instagram, href: socials.instagram.href, label: socials.instagram.label },
+    { Icon: Twitter, href: socials.x.href, label: socials.x.label },
+    { Icon: Facebook, href: socials.facebook.href, label: socials.facebook.label },
   ];
   return (
     <div className={`flex items-center gap-1 ${className}`}>
