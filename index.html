@@ -1,14 +1,79 @@
 ﻿<!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-theme="default">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zuhaib Ahmed â€” AI Engineer &amp; Data Scientist in Pakistan</title>
+    <script>
+      // Design-preview theme engine: reads ?theme=minimal|terminal|editorial
+      // (or VITE_THEME set per dev server). Default stays the original dark
+      // glassmorphism. Production never sets this, so the site is untouched.
+      (function () {
+        try {
+          var param = new URLSearchParams(location.search).get('theme');
+          var env = '%VITE_THEME%';
+          var t = param || (env && env !== '%' + 'VITE_THEME' + '%' ? env : '');
+          if (t) document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+    <script>
+      // Floating preview switcher — only mounts when a preview theme is active.
+      (function () {
+        try {
+          var names = {
+            '': 'Original',
+            minimal: 'A · Minimal',
+            terminal: 'B · Terminal',
+            editorial: 'C · Editorial',
+          };
+          var current = document.documentElement.dataset.theme || '';
+          if (!(current in names)) return;
+          var bar = document.createElement('div');
+          bar.style.cssText =
+            'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;gap:6px;padding:6px;border-radius:12px;background:rgba(15,15,20,0.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 10px 30px rgba(0,0,0,0.35);font:500 12px/1 Inter,system-ui,sans-serif;';
+          var set = function (key) {
+            if (!key) {
+              document.documentElement.removeAttribute('data-theme');
+              var u = new URL(location.href);
+              u.searchParams.delete('theme');
+              history.replaceState(null, '', u);
+            } else {
+              document.documentElement.dataset.theme = key;
+              var u2 = new URL(location.href);
+              u2.searchParams.set('theme', key);
+              history.replaceState(null, '', u2);
+            }
+            build();
+          };
+          var build = function () {
+            bar.textContent = '';
+            Object.keys(names).forEach(function (key) {
+              var isActive = (document.documentElement.dataset.theme || '') === key;
+              var btn = document.createElement('button');
+              btn.textContent = names[key];
+              btn.style.cssText =
+                'border:1px solid ' + (isActive ? 'rgba(167,139,250,0.9)' : 'rgba(255,255,255,0.12)') +
+                ';background:' + (isActive ? 'rgba(167,139,250,0.18)' : 'transparent') +
+                ';color:' + (isActive ? '#c4b5fd' : '#9ca3af') +
+                ';padding:7px 12px;border-radius:8px;cursor:pointer;transition:all .15s;';
+              btn.addEventListener('click', function () { set(key); });
+              bar.appendChild(btn);
+            });
+          };
+          document.addEventListener('DOMContentLoaded', function () {
+            document.body.appendChild(bar);
+            build();
+          });
+        } catch (e) {}
+      })();
+    </script>
     <meta
       name="description"
       content="AI Engineer and Data Scientist in Pakistan building agentic AI systems, multi-agent LLM pipelines, and full-stack ML products. Explore projects like ResearchPilot and AgroVision."
     />
-    <meta name="theme-color" content="#0A0A0F" />
+<meta name="theme-color" content="#0A0A0F" />
+    <meta content="644de159b82e4a2f8e8e5d4c3b2a1f0e" name="bing-site-verification" />
     <link rel="canonical" href="https://portfolio-6wz5.vercel.app/" />
 
     <!-- Open Graph (LinkedIn / WhatsApp / Slack / email previews) -->
@@ -40,8 +105,8 @@
     <!-- Fonts: Space Grotesk for display headings, Inter for body -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+<link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
       rel="stylesheet"
     />
 
