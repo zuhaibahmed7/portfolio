@@ -1,0 +1,280 @@
+openapi: 3.0.3
+info:
+  title: Zuhaib Ahmed Portfolio API
+  description: API specification for the Zuhaib Ahmed portfolio website
+  version: "1.0.0"
+  contact:
+    name: Zuhaib Ahmed
+    email: zuhaibmahar234@gmail.com
+servers:
+  - url: https://portfolio-6wz5.vercel.app
+    description: Production server
+  - url: http://localhost:5173
+    description: Development server
+paths:
+  /api/bookings:
+    get:
+      summary: Get bookings for a date
+      description: Retrieve bookings for a specific date. Returns 400 for invalid date.
+      operationId: getBookings
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Date in YYYY-MM-DD format
+      responses:
+        "200":
+          description: Successful response with bookings list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        startISO:
+                          type: string
+                          format: date-time
+                        duration:
+                          type: integer
+                        status:
+                          type: string
+                        holdExpires:
+                          type: string
+                          format: date-time
+        "400":
+          description: Bad request - invalid date parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+ example: "bad_date"
+    post:
+      summary: Hold or confirm a booking
+      description: Create a hold or confirm a booking. Returns 400 for bad action, 422 for validation errors, 409 if slot taken or overlapping.
+      operationId: postBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [hold, confirm]
+                date:
+                  type: string
+                  format: date
+                startISO:
+                  type: string
+                  format: date-time
+                duration:
+                  type: integer
+                name:
+                  type: string
+                email:
+                  type: string
+                method:
+                  type: string
+                  enum: [bank, payoneer]
+                txnId:
+                  type: string
+                notes:
+                  type: string
+        required: [action]
+      responses:
+        "200":
+          description: Successful response with holdId or ok status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  holdId:
+                    type: string
+                  holdExpires:
+                    type: string
+                    format: date-time
+                  ok:
+                    type: boolean
+                  emailSent:
+                    type: boolean
+        "400":
+          description: Bad request - bad action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "bad_action"
+        "409":
+          description: Slot taken or overlap detected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "slot_taken"
+        "422":
+          description: Validation error - bad date, duration, slot, or details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "bad_date"
+    "/api/contact":
+      post:
+        summary: Submit contact form
+        description: Submit a contact form inquiry. Returns 422 for validation errors, 503 if not configured, 502 for upstream errors.
+        operationId: submitContact
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  message:
+                    type: string
+        responses:
+          "200":
+            description: Successful submission
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    reason:
+                      type: string
+                    bot:
+                      type: boolean
+          "422":
+            description: Validation error - missing or invalid fields
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    error:
+                      type: string
+                      example: "name"
+                    reason:
+                      type: string
+          "503":
+            description: Not configured - fallback to mailto
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    reason:
+                      type: string
+                      example: "not_configured"
+          "502":
+            description: Upstream error or network failure
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    reason:
+                      type: string
+                      example: "upstream"
+                      or "network"
+    /api/chat:
+      post:
+        summary: Chat with the AI assistant
+        description: Send a message to the AI assistant. Returns 400 for empty history, 503 if no LLM key, 502 on provider error.
+        operationId: answerChat
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                          enum: [user, assistant]
+                        content:
+                          type: string
+        responses:
+          "200":
+            description: Successful response with AI reply
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    reply:
+                      type: string
+                    source:
+                      type: string
+                      enum: [local, local-fallback, llm]
+          "400":
+            description: Empty history
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    reply:
+                      type: object
+        "503":
+          description: No LLM key configured - fallback to local brain
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reply:
+                    type: string
+                    nullable: true
+          "502":
+            description: Provider error or network failure
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    reply:
+                      type: string
+                      nullable: true
+externalDocs:
+  description: Learn more about this API
+  url: https://portfolio-6wz5.vercel.app
+components: {}
