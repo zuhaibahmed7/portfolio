@@ -1,0 +1,71 @@
+# llms.txt — Zuhaib Ahmed Portfolio
+
+This file documents the LLM-related capabilities, integrations, and metadata for the Zuhaib Ahmed portfolio project. It follows the llms.txt convention for exposing project-level LLM information.
+
+## Project Overview
+- **Name:** Zuhaib Ahmed Portfolio
+- **Type:** Full-stack AI engineer portfolio website
+- **Primary Focus:** Agentic AI systems, multi-agent LLM pipelines, and full-stack ML products
+
+## LLM Integrations
+
+### Supabase Backend
+- **URL:** https://bjpaassoitjcsbokvjrc.supabase.co
+- **Purpose:** Bookings system with conflict detection, RLS policies
+- **Tables:** `bookings` (status: held → pending_verification → confirmed)
+- **Rules:** 10 PM–1 AM PKT window, 30-min slots, 14-day horizon, PKR 5,000 / ~$18 per block
+- **Authentication:** anon key from `.env` (gitignored)
+- **Conflict Detection:** `slot_taken` (same slot) and `overlap` (time overlap) return 409
+
+### Resend Email Service
+- **API Key:** `RESEND_API_KEY` (send-only restricted, in `.env`)
+- **From Address:** `onboarding@resend.dev` (test sender — spam risk; permanent fix = verified domain)
+- **From Display Name:** `Zuhaib Ahmed - Portfolio`
+- **Contact Form:** POST `/api/contact` → sends inquiry email
+- **Booking Emails:** `sb()` helper in `api/_bookings.mjs` sends booking confirmation via Resend
+
+### Gemini API
+- **Key:** `MY_GEMINI_API_KEY` (placeholder, empty `{}` in old credentials)
+- **Status:** Old credentials purged locally via `reflog + gc`
+
+## Design System
+
+### Theme Engine
+- **3 Preview Themes** (active on dev servers ports 5174/5175/5176):
+  - **A · Minimal** (port 5174): Centered agency layout, flat square cards, indigo accent, serif Fraunces display
+  - **B · Terminal** (port 5175): Left sidebar navigation, monospace typography, green/amber on near-black, boxy code-block cards
+  - **C · Editorial** (port 5176): Top masthead with rules, narrow 62rem reading measure, paper-like cards, ·-separated pills
+- **Theme Attribute:** `<html data-theme="minimal|terminal|editorial">` set via `%VITE_THEME%` env var or `?theme=` query param
+- **Default:** Original dark glassmorphism (production untouched)
+
+### 3D Scene
+- **Engine:** `@react-three/fiber` + `@react-three/drei`
+- **Particles:** 2,600 (desktop) / 1,300 (mobile) points, additive-blended, per-theme palettes
+- **Floating Shapes:** Icosahedron, torus, octahedron, dodecahedron with theme-aware colors
+- **Palette per Theme:** Minimal (indigo/ink), Terminal (green/amber), Editorial (burnt-orange/ink)
+
+## Project Structure
+- **Framework:** React 19 + Vite 6
+- **Styling:** Tailwind CSS 3.4 with `data-theme` overrides in `src/preview-themes.css`
+- **3D:** `@react-three/fiber`, `@react-three/drei` (Float for floating shapes)
+- **API Routes:** `api/_bookings.mjs`, `api/_contact.mjs`
+- **Env:** `.env` (gitignored): `RESEND_API_KEY`, `RESEND_FROM`, `CONTACT_TO`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`
+- **Branch:** `design-exploration` (creation from main; remote `origin` = `https://github.com/zuibahmed7/portfolio.git`)
+
+## Key Capabilities
+- **Booking System:** End-to-end flow with Supabase conflict detection (hold 200, same-slot 409, overlap 409, confirm → pending_verification)
+- **Email Sending:** Resend-backed contact + booking forms (test sender; verified domain needed for production)
+- **GSC Verification:** `google8bf6934e644de159.html` (public, confirmed 200)
+- **Sitemap + Robots:** Updated for live URL `https://portfolio-6wz5.vercel.app/`
+- **Social Links:** Instagram, X (Twitter), Facebook (added to `content.js`, Contact/Navbar/Hero)
+- **SEO:** Canonical/OG/Twitter cards → live URL; 3 JSON-LD blocks (Person, ItemList/SoftwareApplication, FAQPage); prerender post-build injection (`scripts/prerender-seo.mjs`); GSC + sitemap submitted
+
+## LLM Tooling Notes
+- **Claude/Gemini:** Project uses Gemini API (old key purged) and Supabase for data persistence
+- **No OpenAI:** Project maintains own Supabase backend; no third-party LLM calls in production
+- **Design Exploration:** 3-theme preview on separate Vite servers; safe refactor via CSS variables (identical output to original)
+
+## Development
+- **Preview Servers:** `npm run dev -- --port 5174 -- VITE_THEME=minimal`, etc.
+- **Build:** `vite build && node scripts/prerender-seo.mjs`
+- **One URL Switcher:** `http://localhost:5174/` with floating theme switcher (Original/A/Terminal/C/Editorial)
