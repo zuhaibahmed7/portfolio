@@ -1,3 +1,7 @@
 /llms.txt
   Content-Type: text/plain
   Cache-Control: public, max-age=86400
+
+/openapi.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=86400
