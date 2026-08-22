@@ -78,18 +78,19 @@ function sanitizeHistory(raw) {
 /**
  * Core handler: prepends the system prompt to the (sanitized) conversation
  * history and calls the configured OpenAI-compatible endpoint.
- * @returns {Promise<{status: number, reply: string|null}>}
+ * @returns {Promise<{status: number, reply: string|null, error: string, resolution_hint: string}>}
  */
 export async function answerChat(rawHistory) {
   const history = sanitizeHistory(rawHistory);
-  if (history.length === 0) return { status: 400, reply: null };
+  if (history.length === 0) return { status: 400, reply: null, error: 'empty_history', resolution_hint: 'Provide at least one user message.' };
 
   const apiKey = process.env.LLM_API_KEY;
   if (!apiKey) {
     // No LLM configured → answer from the built-in knowledge brain so the
     // chatbot still works on static-only deployments (HF Spaces, etc.)
     const local = localAnswer(history);
-    return local ? { status: 200, reply: local, source: 'local' } : { status: 503, reply: null };
+    if (local) return { status: 200, reply: local, error: null, resolution_hint: null };
+    return { status: 503, reply: null, error: 'not_configured', resolution_hint: 'LLM not configured. Running in local knowledge mode.' };
   }
 
   const baseUrl = (process.env.LLM_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
@@ -118,16 +119,16 @@ export async function answerChat(rawHistory) {
     if (!res.ok || typeof data?.choices?.[0]?.message?.content !== 'string') {
       // Provider failed → degrade gracefully to the local brain
       const local = localAnswer(history);
-      return local ? { status: 200, reply: local, source: 'local-fallback' } : { status: 502, reply: null };
+      return local ? { status: 200, reply: local, error: null, resolution_hint: null } : { status: 502, reply: null, error: 'provider_failed', resolution_hint: 'LLM provider unavailable. Using local knowledge base.' };
     }
 
     const reply = data.choices[0].message.content;
     if (!reply.trim()) {
       const local = localAnswer(history);
-      return local ? { status: 200, reply: local, source: 'local-fallback' } : { status: 502, reply: null };
+      return local ? { status: 200, reply: local, error: null, resolution_hint: null } : { status: 502, reply: null, error: 'empty_response', resolution_hint: 'LLM returned empty response. Try again.' };
     }
 
-    return { status: 200, reply: reply.trim(), source: 'llm' };
+    return { status: 200, reply: reply.trim(), error: null, resolution_hint: null };
   } catch {
     // Network error / timeout / malformed response
     return { status: 502, reply: null };

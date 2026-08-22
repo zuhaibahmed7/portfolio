@@ -96,7 +96,7 @@ const overlaps = (startISO, durationMin, list) => {
 /** GET — bookings for a date (client computes availability from these) */
 export async function getBookings(query) {
   const date = String(query?.date || '');
-  if (!isValidDateStr(date)) return { status: 400, body: { error: 'bad_date' } };
+  if (!isValidDateStr(date)) return { status: 400, error: 'bad_date', message: 'Invalid date format. Use YYYY-MM-DD.', resolution_hint: 'Provide a valid date in YYYY-MM-DD format (e.g., ?date=2024-01-15).' };
   const list = await activeBookings(date);
   return {
     status: 200,
@@ -115,24 +115,24 @@ export async function getBookings(query) {
 export async function postBooking(payload) {
   if (payload?.action === 'hold') return createHold(payload);
   if (payload?.action === 'confirm') return confirmHold(payload);
-  return { status: 400, body: { error: 'bad_action' } };
+  return { status: 400, error: 'bad_action', message: 'Invalid action. Use "hold" or "confirm".', resolution_hint: 'Provide either "hold" or "confirm" as the action parameter.' };
 }
 
 async function createHold(p) {
   const { date, startISO, duration } = p || {};
-  if (!isValidDateStr(String(date))) return { status: 422, body: { error: 'bad_date' } };
-  if (!VALID_DURATIONS.includes(Number(duration))) return { status: 422, body: { error: 'bad_duration' } };
+  if (!isValidDateStr(String(date))) return { status: 422, error: 'bad_date', message: 'Invalid date format.', resolution_hint: 'Provide a valid date in YYYY-MM-DD format.' };
+  if (!VALID_DURATIONS.includes(Number(duration))) return { status: 422, error: 'bad_duration', message: 'Invalid duration. Allowed: 30, 60, 90, 120.', resolution_hint: 'Use one of: 30, 60, 90, or 120 minutes.' };
 
   // startISO must be one of the canonical slots for that date
   if (!slotsForDate(String(date)).includes(String(startISO))) {
-    return { status: 422, body: { error: 'bad_slot' } };
+    return { status: 422, error: 'bad_slot', message: 'Slot not available for this date.', resolution_hint: 'Choose an available 30-minute slot within the booking window.' };
   }
   // Must end within the availability window
   if (Date.parse(startISO) + duration * 60000 > Date.parse(windowEndISO(String(date)))) {
-    return { status: 422, body: { error: 'past_window_end' } };
+    return { status: 422, error: 'past_window_end', message: 'Booking ends after availability window.', resolution_hint: 'Select a start time earlier than the window end time.' };
   }
   // No past slots
-  if (Date.parse(startISO) <= Date.now()) return { status: 422, body: { error: 'past_slot' } };
+  if (Date.parse(startISO) <= Date.now()) return { status: 422, error: 'past_slot', message: 'Start time is in the past.', resolution_hint: 'Select a future start time.' };
 
   // Authoritative conflict re-check
   const list = await activeBookings(String(date));
@@ -153,7 +153,7 @@ async function createHold(p) {
 async function confirmHold(p) {
   const { holdId, name, email, method, txnId, notes } = p || {};
   if (typeof holdId !== 'string' || !/^[0-9a-f-]{36}$/i.test(holdId)) {
-    return { status: 422, body: { error: 'bad_hold' } };
+    return { status: 422, error: 'bad_hold', message: 'Invalid hold ID format.', resolution_hint: 'Provide a valid booking hold ID (36-character hex string).' };
   }
   const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
   const cName = clean(name, 100);
@@ -162,7 +162,7 @@ async function confirmHold(p) {
   const cMethod = method === 'bank' ? 'bank' : 'payoneer';
   const cNotes = clean(notes, 500);
   if (!cName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cEmail) || cTxn.length < 4) {
-    return { status: 422, body: { error: 'bad_details' } };
+    return { status: 422, error: 'bad_details', message: 'Missing or invalid details.', resolution_hint: 'Provide valid name, email, and transaction ID (at least 4 characters).' };
   }
 
   // Load the hold (must still be active)

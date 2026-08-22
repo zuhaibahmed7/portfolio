@@ -32,18 +32,32 @@ function validate(p) {
   return { ok: true, name, email, message };
 }
 
+/** Provide user-friendly resolution hints for contact form errors */
+function getResolutionHint(error) {
+  switch (error) {
+    case 'name':
+      return 'Enter your name (1-100 characters).';
+    case 'email':
+      return 'Enter a valid email address (1-150 characters).';
+    case 'message':
+      return 'Enter a message (1-2000 characters).';
+    default:
+      return 'Please check the form and try again.';
+  }
+}
+
 /**
- * @returns {Promise<{status: number, ok: boolean, reason?: string}>}
+ * @returns {Promise<{status: number, ok: boolean, error: string, resolution_hint: string}>}
  */
 export async function submitContact(payload) {
   const v = validate(payload);
-  if (!v.ok) return { status: 422, ok: false, reason: v.error };
-  if (v.bot) return { status: 200, ok: true }; // silent bot swallow
+  if (!v.ok) return { status: 422, ok: false, error: v.error, resolution_hint: getResolutionHint(v.error) };
+  if (v.bot) return { status: 200, ok: true, error: null, resolution_hint: null };
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     // Not configured — client falls back to the mailto: flow
-    return { status: 503, ok: false, reason: 'not_configured' };
+    return { status: 503, ok: false, error: 'not_configured', resolution_hint: 'Contact form temporarily unavailable. Email service not configured. Use the mailto: link below.' };
   }
 
   const to = process.env.CONTACT_TO || 'zuhaibmahar234@gmail.com';
