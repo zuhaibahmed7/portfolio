@@ -17,7 +17,9 @@
       ]
     }
   ],
-  "rewrites": [
-    { "source": "/((?!api/|openapi.json).*)", "destination": "/index.html" }
+  "routes": [
+    { "source": "/", "destination": "/", "statusCode": 200 },
+    { "source": "/api/(.*)", "destination": "/api/$1", "statusCode": 200 },
+    { "source": "/(.*)", "destination": "/", "statusCode": 404 }
   ]
 }
