@@ -55,7 +55,7 @@ export default function About() {
   const facts = [
     { Icon: MapPin, label: 'Location', value: profile.location },
     { Icon: GraduationCap, label: 'Education', value: `${education.school} - continue` },
-    { Icon: Award, label: 'Award', value: 'dYZ" SEEF Sindh Government Scholarship recipient (2026)' },
+    { Icon: Award, label: 'Award', value: 'SEEF Sindh Government Scholarship recipient (2026)' },
     { Icon: Sparkles, label: 'Focus', value: 'AI, Machine Learning & Full-Stack Development' },
   ];
 
@@ -68,7 +68,7 @@ export default function About() {
           index={1}
           eyebrow="About"
           title="Engineering intelligence into products"
-          lead="AI builder from Sindh, Pakistan �?" training models, wiring up agents, and shipping them to real users."
+          lead="AI builder from Sindh, Pakistan — training models, wiring up agents, and shipping them to real users."
         />
 
         <div className="mt-14 grid items-center gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
@@ -124,7 +124,7 @@ export default function About() {
                       <span key={item} className="pill">
                         {item}
                       </span>
-                    ))
+                    ))}
                   </div>
                 </Reveal>
               </>
