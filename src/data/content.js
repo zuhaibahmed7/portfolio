@@ -45,7 +45,7 @@ export const education = {
   school: 'Sukkur IBA University',
   location: 'Sukkur, Pakistan',
   degree: 'Bachelor of Science in Computer Software Engineering',
-  period: '2024 — 2028 (Expected)',
+  period: 'continue',
   now: 'Currently deepening skills in AI, Deep Learning, and MLOps.',
 };
 
