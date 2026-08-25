@@ -386,13 +386,6 @@ export const testimonials = [
   },
   {
     quote:
-      'Zuhaib is one of the few students I\u2019ve seen consistently ship projects outside of coursework. His plant disease detection model wasn\u2019t a class assignment — he built it because he wanted to see if he could get it production-ready.',
-    name: 'Dr. Sana Qureshi',
-    role: 'Faculty, Sukkur IBA University',
-    initials: 'SQ',
-  },
-  {
-    quote:
       'It was a great experience working with Zuhaib Ahmed on AGRO Vision. I really appreciated his sense of responsibility, commitment, and willingness to learn. Working together taught me a lot about teamwork and handling challenges. I believe experiencing mistakes and solving problems ourselves is what prepares us for bigger challenges ahead. Overall, I had a really good experience working with him, and I\u2019m glad we got to work on this project together.',
     name: 'Muhammad Waleed Qureshi',
     role: 'Software Engineering Student',
