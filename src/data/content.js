@@ -157,6 +157,17 @@ export const certifications = [
   { title: 'Claude 101', issuer: 'Anthropic', date: 'Mar 2026', credentialId: 'qagzx8ygpkae' },
   { title: 'Maximize Productivity With AI Tools', issuer: 'Google via Coursera', date: 'Jul 2025' },
   { title: 'Introduction to SQL', issuer: 'DataCamp', date: 'Feb 2026' },
+  {
+    title: 'Agents League – Reasoning Agents',
+    issuer: 'Global AI Community',
+    date: 'Jul 2026',
+    credentialId: '973a7853-ae4a-4c5c-81ee-3cd7a55a22f8',
+  },
+  {
+    title: 'Build Small — Certificate of Participation',
+    issuer: 'Hugging Face × Gradio',
+    date: 'Jun 2026',
+  },
 ];
 
 export const projects = [
