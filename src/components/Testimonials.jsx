@@ -4,9 +4,9 @@ import { Reveal, SectionHeading } from './ui.jsx';
 
 /* ---------------------------------------------------------------------------
    Testimonials / Endorsements (Feature #6).
-   ⚠️ The quotes currently rendered come from content.js with FICTIONAL
-   placeholder names — TODO: swap them for real endorsements before
-   publishing. See the warning comment at `testimonials` in content.js.
+   Real endorsements from Ghulam Mujtaba and Muhammad Waleed Qureshi.
+   Add more real quotes from teammates, professors, or hackathon judges
+   by appending to the `testimonials` array in content.js.
 --------------------------------------------------------------------------- */
 
 export default function Testimonials() {
@@ -22,7 +22,7 @@ export default function Testimonials() {
           lead="Short endorsements from people Zuhaib has built, studied and shipped with."
         />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div className={`mt-12 grid gap-5 ${testimonials.length >= 3 ? 'md:grid-cols-3' : testimonials.length === 2 ? 'md:grid-cols-2 max-w-3xl mx-auto' : 'max-w-xl mx-auto'}`}>
           {testimonials.map((t, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <figure className="glass-card flex h-full flex-col gap-4 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent-pink/30 hover:shadow-glow-pink">

@@ -371,13 +371,6 @@ export const hackathons = [
 export const testimonials = [
   {
     quote:
-      'Zuhaib was the person on our team who\u2019d quietly go build the thing while the rest of us were still debating architecture. The multi-agent research pipeline he put together for the hackathon worked end-to-end days before the deadline — that\u2019s rare.',
-    name: 'Ayesha Raza',
-    role: 'Hackathon Teammate, Microsoft Agents League',
-    initials: 'AR',
-  },
-  {
-    quote:
       'We worked together on our Software Design and Architecture project, developing a Canteen Order Queue Management System. Zuhaib demonstrated excellent teamwork, responsibility, and a strong understanding of software engineering concepts. He was a valuable and cooperative team member throughout the project. I confidently recommend Zuhaib for future academic and professional opportunities.',
     name: 'Ghulam Mujtaba',
     role: 'BSCS | AI & ML Enthusiast',
@@ -389,6 +382,7 @@ export const testimonials = [
       'It was a great experience working with Zuhaib Ahmed on AGRO Vision. I really appreciated his sense of responsibility, commitment, and willingness to learn. Working together taught me a lot about teamwork and handling challenges. I believe experiencing mistakes and solving problems ourselves is what prepares us for bigger challenges ahead. Overall, I had a really good experience working with him, and I\u2019m glad we got to work on this project together.',
     name: 'Muhammad Waleed Qureshi',
     role: 'Software Engineering Student',
+    initials: 'WQ',
   },
 ];
 
