@@ -1,9 +1,12 @@
+import { lazy, Suspense } from 'react';
 import { ViewProvider } from './context/ViewContext.jsx';
 import { SectionGate } from './components/ui.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import Intro from './components/Intro.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
 import Navbar from './components/Navbar.jsx';
+
+
 import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
 import StatsCounter from './components/StatsCounter.jsx';
@@ -27,9 +30,9 @@ import Chatbot from './components/Chatbot.jsx';
 import NotFound from './components/NotFound.jsx';
 
 function Site() {
-  // SPA-without-router 404: any path other than "/" renders the themed
-  // not-found page (hosts with SPA fallbacks always serve index.html).
+  // SPA-without-router: handle /demo routes + 404
   const path = typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '';
+
   if (path !== '') return <NotFound />;
 
   return (

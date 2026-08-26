@@ -128,8 +128,18 @@ const TECH_ITEMS = [
     name: 'Hugging Face',
     color: '#FFD21E',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#FFD21E">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
+        {/* Face circle */}
+        <circle cx="12" cy="12" r="10" fill="#FFD21E" />
+        {/* Eyes */}
+        <circle cx="8.5" cy="10.5" r="1.2" fill="#1a1a1a" />
+        <circle cx="15.5" cy="10.5" r="1.2" fill="#1a1a1a" />
+        {/* Smile */}
+        <path d="M8 14.5c1 1.5 7 1.5 8 0" stroke="#1a1a1a" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+        {/* Left blush */}
+        <ellipse cx="6.5" cy="13" rx="1.2" ry="0.8" fill="#FF9D3D" opacity="0.5" />
+        {/* Right blush */}
+        <ellipse cx="17.5" cy="13" rx="1.2" ry="0.8" fill="#FF9D3D" opacity="0.5" />
       </svg>
     ),
   },
