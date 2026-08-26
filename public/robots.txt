@@ -2,4 +2,4 @@
 Allow: /
 Disallow: /api/
 
-Sitemap: https://portfolio-6wz5.vercel.app/sitemap.xml
+Sitemap: https://portfolio-rho-nine-gb5m68vt3j.vercel.app/sitemap.xml

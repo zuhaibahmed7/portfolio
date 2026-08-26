@@ -17,9 +17,7 @@
       ]
     }
   ],
-  "routes": [
-    { "source": "/", "destination": "/", "statusCode": 200 },
-    { "source": "/api/(.*)", "destination": "/api/$1", "statusCode": 200 },
-    { "source": "/(.*)", "destination": "/", "statusCode": 404 }
+  "rewrites": [
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ]
 }

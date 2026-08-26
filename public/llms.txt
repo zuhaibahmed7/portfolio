@@ -56,7 +56,7 @@ This file documents the LLM-related capabilities, integrations, and metadata for
 - **Booking System:** End-to-end flow with Supabase conflict detection (hold 200, same-slot 409, overlap 409, confirm → pending_verification)
 - **Email Sending:** Resend-backed contact + booking forms (test sender; verified domain needed for production)
 - **GSC Verification:** `google8bf6934e644de159.html` (public, confirmed 200)
-- **Sitemap + Robots:** Updated for live URL `https://portfolio-6wz5.vercel.app/`
+- **Sitemap + Robots:** Updated for live URL `https://portfolio-rho-nine-gb5m68vt3j.vercel.app/`
 - **Social Links:** Instagram, X (Twitter), Facebook (added to `content.js`, Contact/Navbar/Hero)
 - **SEO:** Canonical/OG/Twitter cards → live URL; 3 JSON-LD blocks (Person, ItemList/SoftwareApplication, FAQPage); prerender post-build injection (`scripts/prerender-seo.mjs`); GSC + sitemap submitted
 
