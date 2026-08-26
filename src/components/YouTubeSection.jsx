@@ -33,7 +33,7 @@ export default function YouTubeSection() {
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]">
           <div>
             <SectionHeading
-              index={9}
+              index={11}
               eyebrow="YouTube"
               title="I share what I'm building on YouTube"
               lead="Build logs, AI experiments and lessons from shipping real projects — documented in public."

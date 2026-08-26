@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Download, Facebook, Github, Instagram, Layers, Linkedin, Mail, Twitter, X, Youtube, Zap } from 'lucide-react';
 import { profile, roles, socials } from '../data/content.js';
+import { useTranslations } from '../hooks/useTranslations.js';
 import { useTypewriter } from '../hooks/useTypewriter.js';
 import { useView } from '../context/ViewContext.jsx';
 import { CopyEmailButton, Magnetic } from './ui.jsx';
@@ -128,6 +129,7 @@ export default function Hero() {
   const reduced = useReducedMotion();
   const typed = useTypewriter(roles);
   const { isQuick } = useView();
+  const t = useTranslations();
   const { isLight } = useTheme();
   const [mountScene, setMountScene] = useState(false);
 
@@ -184,7 +186,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-cyan opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-cyan" />
           </span>
-          Hi, I&apos;m available for AI &amp; Data projects
+          {t.heroStatus}
         </motion.p>
 
         <AnimatedName />
@@ -199,7 +201,7 @@ export default function Hero() {
         {/* Long summary only in Detailed View — Quick keeps the scan tight */}
         {!isQuick && (
           <motion.p {...fade(1.7)} className="mt-6 max-w-2xl leading-relaxed text-muted">
-            {profile.summary}
+            {t.heroSummary || profile.summary}
           </motion.p>
         )}
 

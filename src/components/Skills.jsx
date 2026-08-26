@@ -2,7 +2,9 @@ import { motion } from 'framer-motion';
 import { Bot, BrainCircuit, Code2, Container, Database, PenTool, Server } from 'lucide-react';
 import { learningByCategory, skillCategories } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
+import { useTranslations } from '../hooks/useTranslations.js';
 import { Pill, Reveal, SectionHeading } from './ui.jsx';
+import TechLogo from './TechLogo.jsx';
 
 // Icon mapping per skill category
 const ICONS = {
@@ -17,6 +19,7 @@ const ICONS = {
 
 export default function Skills() {
   const { isQuick, view } = useView();
+  const t = useTranslations();
 
   return (
     <section id="skills" className="relative overflow-hidden py-28 sm:py-32" aria-label="Skills">
@@ -26,7 +29,7 @@ export default function Skills() {
         <SectionHeading
           index={2}
           eyebrow="Skills"
-          title={isQuick ? 'The essentials' : 'A full-stack AI toolkit'}
+          title={isQuick ? 'The essentials' : (t.skillsTitle || 'A full-stack AI toolkit')}
           lead={
             isQuick
               ? 'Top three skills per area — flip to Detailed View for the complete toolkit.'
@@ -59,6 +62,7 @@ export default function Skills() {
                     <div className="mt-5 flex flex-wrap gap-2">
                       {skills.map((skill, si) => (
                         <Pill key={skill} index={si}>
+                          <TechLogo name={skill} className="mr-1.5" />
                           {skill}
                         </Pill>
                       ))}

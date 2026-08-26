@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Award, GraduationCap, MapPin, Sparkles } from 'lucide-react';
-import { education, interests, nowItems, nowUpdated, profile } from '../data/content.js';
+import { education, interests, nowItems, nowUpdated, profile, translations } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
+import { useTranslations } from '../hooks/useTranslations.js';
 import { Reveal, SectionHeading } from './ui.jsx';
 import profilePhoto from '../assets/profile.png';
 
@@ -51,6 +52,7 @@ function NowCard() {
 export default function About() {
   const reduced = useReducedMotion();
   const { isQuick, view } = useView();
+  const t = useTranslations();
 
   const facts = [
     { Icon: MapPin, label: 'Location', value: profile.location },
@@ -67,8 +69,8 @@ export default function About() {
         <SectionHeading
           index={1}
           eyebrow="About"
-          title="Engineering intelligence into products"
-          lead="AI builder from Sindh, Pakistan — training models, wiring up agents, and shipping them to real users."
+          title={t.aboutTitle || 'Engineering intelligence into products'}
+          lead={t.aboutLead || 'AI builder from Sindh, Pakistan — training models, wiring up agents, and shipping them to real users.'}
         />
 
         <div className="mt-14 grid items-center gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">

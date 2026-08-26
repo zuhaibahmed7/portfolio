@@ -3,11 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight, BookOpen, ChevronDown, Github, Play, Sparkles } from 'lucide-react';
 import { projects, socials } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
+import { useTranslations } from '../hooks/useTranslations.js';
 import { Pill, Reveal, SectionHeading } from './ui.jsx';
 import ArchitectureDiagram from './ArchitectureDiagram.jsx';
 import RadialStat from './RadialStat.jsx';
 import Modal from './Modal.jsx';
 import CaseStudyModal from './CaseStudyModal.jsx';
+import CardTilt from './CardTilt.jsx';
 import { track } from '../analytics.js';
 
 /* Mini diagram of the ResearchPilot pipeline shown in the featured card's
@@ -77,6 +79,7 @@ function HowItWorks({ variant, open, onToggle }) {
 function FeaturedProject({ project, onDemo, onCase, howOpen, toggleHow }) {
   return (
     <Reveal>
+      <CardTilt intensity={8}>
       <article className="glass-card--border-gradient glass-card overflow-hidden rounded-3xl transition-all duration-500 hover:-translate-y-1.5 hover:shadow-glow">
         <div className="grid lg:grid-cols-2">
           <div className="p-7 sm:p-10">
@@ -144,6 +147,7 @@ function FeaturedProject({ project, onDemo, onCase, howOpen, toggleHow }) {
           </div>
         </div>
       </article>
+    </CardTilt>
     </Reveal>
   );
 }
@@ -170,6 +174,7 @@ function ProjectCard({ project, delay = 0, howOpen, toggleHow }) {
 
   return (
     <Reveal delay={delay} className="h-full">
+      <CardTilt intensity={6}>
       <article className="glass-card group flex h-full flex-col rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow sm:p-7">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -219,6 +224,7 @@ function ProjectCard({ project, delay = 0, howOpen, toggleHow }) {
           ))}
         </div>
       </article>
+      </CardTilt>
     </Reveal>
   );
 }
@@ -306,6 +312,7 @@ function LiveDemoModal({ open, onClose }) {
 
 export default function Projects() {
   const { isQuick, view } = useView();
+  const t = useTranslations();
   const [modal, setModal] = useState(null); // 'demo' | 'case' | null
   const [howOpen, setHowOpen] = useState({}); // per-project diagram expanders
   const toggleHow = (id) => setHowOpen((s) => ({ ...s, [id]: !s[id] }));
@@ -319,9 +326,9 @@ export default function Projects() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={5}
+          index={7}
           eyebrow="Projects"
-          title={isQuick ? 'Top projects at a glance' : "Things I've built & shipped"}
+          title={isQuick ? 'Top projects at a glance' : (t.projectsTitle || "Things I've built & shipped")}
           lead={
             isQuick
               ? 'The three that matter most — switch to Detailed View for everything, with full write-ups.'

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Facebook, Github, Instagram, Linkedin, Menu, X, Download, Moon, Sun, Twitter, Youtube } from 'lucide-react';
+import { Facebook, Github, Instagram, Linkedin, Menu, X, Download, Moon, Sun, Twitter, Youtube, Globe } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme.js';
+import { useLang } from '../hooks/useLang.js';
 import { socials } from '../data/content.js';
 import { track } from '../analytics.js';
 
@@ -50,6 +51,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
   const { isLight, toggle: toggleTheme } = useTheme();
+  const { lang, toggle: toggleLang } = useLang();
 
   // Turn on the glassmorphic background once the page is scrolled a bit
   useEffect(() => {
@@ -98,6 +100,16 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           <SocialLinks className="hidden 2xl:flex" />
+          {/* Language toggle (EN/UR) */}
+          <button
+            type="button"
+            onClick={toggleLang}
+            aria-label={lang === 'en' ? 'Switch to Urdu' : 'Switch to English'}
+            title={lang === 'en' ? 'Switch to Urdu' : 'Switch to English'}
+            className="rounded-lg p-2 text-muted transition-all duration-300 hover:-translate-y-0.5 hover:text-accent-cyan"
+          >
+            <span className="font-display text-xs font-bold">{lang === 'en' ? 'EN' : 'UR'}</span>
+          </button>
           {/* Light/dark theme toggle — persisted, OS-preference default */}
           <button
             type="button"

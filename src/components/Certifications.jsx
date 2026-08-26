@@ -21,7 +21,7 @@ export default function Certifications() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={8}
+          index={10}
           eyebrow="Certifications & Awards"
           title="Credentials & recognition"
           lead="Continuous learning across generative AI, machine learning and data — plus recognition along the way."

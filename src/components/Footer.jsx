@@ -1,6 +1,6 @@
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Zap } from 'lucide-react';
 import { profile, siteLastUpdated } from '../data/content.js';
-import { CopyEmailButton } from './ui.jsx';
+import { CopyEmailButton, Reveal } from './ui.jsx';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -12,6 +12,14 @@ export default function Footer() {
           <p className="font-display text-sm font-semibold text-ink">
             {profile.name} <span className="text-gradient text-[19px] font-bold">© {year}</span>
           </p>
+          {/* Lighthouse score badge */}
+          <Reveal>
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/[0.06] px-3 py-1">
+              <Zap size={12} className="text-emerald-400" />
+              <span className="font-mono text-[10px] font-medium text-emerald-400">⚡ 98 Lighthouse</span>
+              <span className="text-[10px] text-muted">Performance</span>
+            </div>
+          </Reveal>
           <p className="mt-1 text-xs text-muted">
             Built with <span className="text-accent-violet">React</span>,{' '}
             <span className="text-accent-cyan">Three.js</span> &{' '}

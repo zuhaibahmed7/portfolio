@@ -55,7 +55,7 @@ export default function Experience() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={3}
+          index={5}
           eyebrow="Experience"
           title="Education & journey"
           lead="Where I'm studying, and what I'm sharpening right now."

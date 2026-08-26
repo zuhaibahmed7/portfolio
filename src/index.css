@@ -364,6 +364,27 @@ html.light ::-webkit-scrollbar-thumb { border-color: #f6f6f8; }
    Interactive-only chrome is hidden via Tailwind `print:hidden` classes on
    the components; these rules handle colors + decorative layers.
 --------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------
+   RTL SUPPORT — Urdu language toggle. When dir="rtl" is set on <html>,
+   text alignment and flex direction flip automatically. We add a Noto
+   Nastaliq Urdu font for the Urdu language mode.
+------------------------------------------------------------------- */
+html[dir='rtl'] body {
+  font-family: 'Noto Nastaliq Urdu', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Marquee reverses direction in RTL */
+html[dir='rtl'] .marquee-track {
+  animation-direction: reverse;
+}
+
+/* Timeline flips sides in RTL */
+@media (min-width: 1024px) {
+  html[dir='rtl'] .timeline-left { order: 3; }
+  html[dir='rtl'] .timeline-center { order: 2; }
+  html[dir='rtl'] .timeline-right { order: 1; }
+}
+
 @media print {
   .aura,
   .grid-overlay,

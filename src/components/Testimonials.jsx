@@ -16,7 +16,7 @@ export default function Testimonials() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={7}
+          index={9}
           eyebrow="Testimonials"
           title="What people say"
           lead="Short endorsements from people Zuhaib has built, studied and shipped with."

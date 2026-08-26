@@ -102,7 +102,7 @@ export default function Hackathons() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={6}
+          index={8}
           eyebrow="Hackathons"
           title="Built under pressure"
           lead="Three hackathon submissions — multi-agent research, persistent-memory health AI, and bilingual vision tools."

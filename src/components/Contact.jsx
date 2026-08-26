@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Facebook, Github, Instagram, Linkedin, Mail, Phone, Send, Twitter, Youtube } from 'lucide-react';
 import { profile, socials } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
+import { useTranslations } from '../hooks/useTranslations.js';
 import { CopyEmailButton, Magnetic, Reveal, SectionHeading } from './ui.jsx';
 import Modal from './Modal.jsx';
 import BookingFlow from './BookingFlow.jsx';
@@ -23,6 +24,7 @@ const inputCls =
 
 export default function Contact() {
   const { isQuick, view } = useView();
+  const t = useTranslations();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -94,9 +96,9 @@ export default function Contact() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={11}
+          index={14}
           eyebrow="Contact"
-          title="Let's build something together"
+          title={t.contactTitle || "Let's build something together"}
           lead="Have an AI project, a data problem, or just want to talk shop? My inbox is open."
           align="center"
         />

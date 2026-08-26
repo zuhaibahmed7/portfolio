@@ -6,9 +6,15 @@ import CustomCursor from './components/CustomCursor.jsx';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
+import StatsCounter from './components/StatsCounter.jsx';
+import TechMarquee from './components/TechMarquee.jsx';
 import Skills from './components/Skills.jsx';
+import SkillRadar from './components/SkillRadar.jsx';
+import ProjectTimeline from './components/ProjectTimeline.jsx';
 import Experience from './components/Experience.jsx';
 import GitHubFeed from './components/GitHubFeed.jsx';
+import ActivityHeatmap from './components/ActivityHeatmap.jsx';
+import ResumeQR from './components/ResumeQR.jsx';
 import Projects from './components/Projects.jsx';
 import Hackathons from './components/Hackathons.jsx';
 import Testimonials from './components/Testimonials.jsx';
@@ -42,7 +48,11 @@ function Site() {
       <main id="main">
         <Hero />
         <About />
+        <StatsCounter />
+        <TechMarquee />
         <Skills />
+        <SkillRadar />
+        <ProjectTimeline />
 
         {/* These sections are hidden in Quick View (recruiter toggle) —
             SectionGate fades them out when switching to 'quick' */}
@@ -60,6 +70,10 @@ function Site() {
         <Projects />
 
         <SectionGate>
+          <ActivityHeatmap />
+        </SectionGate>
+
+        <SectionGate>
           <Hackathons />
         </SectionGate>
 
@@ -74,6 +88,27 @@ function Site() {
         </SectionGate>
         <SectionGate>
           <NotesSection />
+        </SectionGate>
+
+        <SectionGate>
+          <section className="relative overflow-hidden py-20 sm:py-24 print:hidden" aria-label="Resume">
+            <div className="container-x relative">
+              <div className="flex flex-col items-center text-center">
+                <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent-cyan/90">
+                  13 &middot; Resume
+                </span>
+                <h2 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+                  Quick resume scan <span className="text-gradient">.</span>
+                </h2>
+                <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
+                  Scan the QR code to download my resume, or click the button in the navbar.
+                </p>
+              </div>
+              <div className="mt-10 flex justify-center">
+                <ResumeQR />
+              </div>
+            </div>
+          </section>
         </SectionGate>
 
         <Contact />

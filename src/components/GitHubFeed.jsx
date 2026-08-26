@@ -138,7 +138,7 @@ export default function GitHubFeed() {
 
       <div className="container-x relative">
         <SectionHeading
-          index={4}
+          index={6}
           eyebrow="Live from GitHub"
           title="Proof, not promises"
           lead="Real activity pulled live from the GitHub API — repos, pushes and recent work."
