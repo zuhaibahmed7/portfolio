@@ -141,7 +141,7 @@ export const awards = [
   {
     title: 'SEEF Sindh Government Scholarship',
     issuer: 'Sindh Education Endowment Fund (Government of Sindh)',
-    date: 'July 2026',
+    date: 'July',
     tag: 'Merit- & Need-Based Award',
   },
 ];
