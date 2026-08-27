@@ -43,6 +43,7 @@ export const socials = {
   hackerrank: { label: 'HackerRank', href: 'https://www.hackerrank.com/profile/shoaibmahar347' },
   replit: { label: 'Replit', href: 'https://replit.com/@zuhaibmahar234' },
   lovable: { label: 'Lovable', href: 'https://lovable.dev/@zulodro_z' },
+  leetcode: { label: 'LeetCode', href: 'https://leetcode.com/u/zuhaibahmed347/' },
 };
 
 export const education = {

@@ -92,6 +92,7 @@ export default function Contact() {
     { Icon: Globe, label: 'HackerRank', value: 'hackerrank.com/shoaibmahar347', href: socials.hackerrank.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
     { Icon: Globe, label: 'Replit', value: 'replit.com/@zuhaibmahar234', href: socials.replit.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
     { Icon: Globe, label: 'Lovable', value: 'lovable.dev/@zulodro_z', href: socials.lovable.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
+    { Icon: Globe, label: 'LeetCode', value: 'leetcode.com/zuhaibahmed347', href: socials.leetcode.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
   ];
 
   return (

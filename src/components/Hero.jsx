@@ -157,6 +157,7 @@ export default function Hero() {
     { Icon: Globe, href: socials.hackerrank.href, label: socials.hackerrank.label },
     { Icon: Globe, href: socials.replit.href, label: socials.replit.label },
     { Icon: Globe, href: socials.lovable.href, label: socials.lovable.label },
+    { Icon: Globe, href: socials.leetcode.href, label: socials.leetcode.label },
     { Icon: Mail, href: `mailto:${profile.email}`, label: 'Email' },
   ];
 
