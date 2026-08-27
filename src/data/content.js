@@ -191,6 +191,19 @@ export const projects = [
     demo: socials.huggingface.href,
   },
   {
+    id: 'coursecreator',
+    title: 'Multi-Agent AI Course Creator',
+    subtitle: 'Distributed Multi-Agent System with Google ADK',
+    tech: ['Python', 'Google ADK', 'A2A Protocol', 'Google Cloud Run', 'FastAPI'],
+    bullets: [
+      'Built a distributed multi-agent system using Google\'s Agent Development Kit (ADK) and Agent-to-Agent (A2A) protocol that autonomously researches, judges, and builds course content.',
+      'Architected 4 microservice agents — Orchestrator, Researcher, Judge, Content Builder — each running in its own container and communicating via A2A.',
+      'Implemented workflow orchestration using LoopAgent and SequentialAgent with RemoteA2aAgent for cross-service communication.',
+      'Deployed on Google Cloud Run with a web app frontend displaying real-time agent progress and final course output.',
+    ],
+    demo: 'https://course-creator-481498313651.us-west1.run.app',
+  },
+  {
     id: 'agrovision',
     title: 'AgroVision',
     subtitle: 'AI Plant Disease Prediction System',
