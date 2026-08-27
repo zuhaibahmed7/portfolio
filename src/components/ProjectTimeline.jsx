@@ -41,7 +41,7 @@ const TIMELINE = [
     period: 'Now',
     title: 'Agentic AI Systems',
     desc: 'Multi-agent LLM pipelines, hackathon wins, and production-grade AI products.',
-    items: ['ResearchPilot (4-agent pipeline)', 'MediAssist (persistent memory)', 'Smart Photo Analyzer (bilingual)'],
+    items: ['ResearchPilot (4-agent pipeline)', 'MediAssist (persistent memory)', 'Smart Photo Analyzer (bilingual)', 'Course Creator (Google ADK + A2A)'],
     color: 'accent-cyan',
     icon: <Rocket size={18} strokeWidth={1.8} />,
   },
