@@ -52,7 +52,7 @@ export default function Certifications() {
                 <div className="min-w-0">
                   <h3 className="font-display text-sm font-semibold leading-snug text-ink">{item.title}</h3>
                   <p className="mt-1 text-xs text-muted">
-                    {item.issuer} · {item.date}
+                    {item.issuer}{item.date ? ` · ${item.date}` : ''}
                   </p>
                   {/* Award type tag / credential ID — same slot, same sizing */}
                   {item.isAward ? (
