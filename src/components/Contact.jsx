@@ -88,11 +88,15 @@ export default function Contact() {
     { Icon: Instagram, label: 'Instagram', value: '@aiwithzuhaib', href: socials.instagram.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
     { Icon: Twitter, label: 'X (Twitter)', value: '@ZohaibAhmedMah2', href: socials.x.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
     { Icon: Facebook, label: 'Facebook', value: 'Zuhaib Ahmed', href: socials.facebook.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
-    { Icon: Globe, label: 'Kaggle', value: 'kaggle.com/zuhaib123', href: socials.kaggle.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
-    { Icon: Globe, label: 'HackerRank', value: 'hackerrank.com/shoaibmahar347', href: socials.hackerrank.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
-    { Icon: Globe, label: 'Replit', value: 'replit.com/@zuhaibmahar234', href: socials.replit.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
-    { Icon: Globe, label: 'Lovable', value: 'lovable.dev/@zulodro_z', href: socials.lovable.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
-    { Icon: Globe, label: 'LeetCode', value: 'leetcode.com/zuhaibahmed347', href: socials.leetcode.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
+  ];
+
+  const platformLinks = [
+    { Icon: Globe, label: 'Kaggle', value: 'kaggle.com/zuhaib123', href: socials.kaggle.href, category: 'Data Science' },
+    { Icon: Globe, label: 'HackerRank', value: 'hackerrank.com/shoaibmahar347', href: socials.hackerrank.href, category: 'Coding Challenges' },
+    { Icon: Globe, label: 'LeetCode', value: 'leetcode.com/zuhaibahmed347', href: socials.leetcode.href, category: 'Coding Challenges' },
+    { Icon: Globe, label: 'Replit', value: 'replit.com/@zuhaibmahar234', href: socials.replit.href, category: 'Development' },
+    { Icon: Globe, label: 'Lovable', value: 'lovable.dev/@zulodro_z', href: socials.lovable.href, category: 'Development' },
+    { Icon: Globe, label: 'Hugging Face', value: 'huggingface.co/zuhaibahmed7', href: socials.huggingface.href, category: 'AI / ML' },
   ];
 
   return (
@@ -138,6 +142,43 @@ export default function Contact() {
                 Book a Call
               </button>
             </Magnetic>
+          </div>
+        </Reveal>
+
+        {/* Coding & Platform Profiles */}
+        <Reveal delay={0.4}>
+          <div className="mt-16">
+            <p className="mb-6 text-center text-sm font-medium uppercase tracking-widest text-muted">Find me elsewhere</p>
+            {(() => {
+              const categories = {};
+              platformLinks.forEach((link) => {
+                if (!categories[link.category]) categories[link.category] = [];
+                categories[link.category].push(link);
+              });
+              return (
+                <div className="flex flex-col items-center gap-6">
+                  {Object.entries(categories).map(([cat, links]) => (
+                    <div key={cat} className="text-center">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent-cyan/70">{cat}</p>
+                      <div className="flex flex-wrap justify-center gap-3">
+                        {links.map(({ Icon, label, value, href }) => (
+                          <a
+                            key={label}
+                            href={href}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="glass-card group flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-violet/40 hover:shadow-glow"
+                          >
+                            <Icon size={16} strokeWidth={1.8} className="text-accent-cyan transition-transform duration-300 group-hover:scale-110" />
+                            <span className="font-medium text-ink">{label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         </Reveal>
 
