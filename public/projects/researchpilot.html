@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResearchPilot — Multi-Agent Autonomous Research System | Zuhaib Ahmed</title>
+  <meta name="description" content="ResearchPilot is a multi-agent AI reasoning system with Planner, Researcher, Critic, and Synthesizer agents that autonomously decomposes research questions, retrieves sourced evidence, and synthesizes cited reports." />
+  <link rel="canonical" href="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/projects/researchpilot" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="ResearchPilot — Multi-Agent Autonomous Research System" />
+  <meta property="og:description" content="A 4-agent autonomous research system built on GitHub Models with real-time streaming frontend." />
+  <meta property="og:image" content="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ResearchPilot",
+    "applicationCategory": "AIApplication",
+    "description": "Multi-agent autonomous research system with Planner, Researcher, Critic and Synthesizer agents that decomposes research questions, retrieves sourced evidence, self-critiques coverage and synthesizes cited reports.",
+    "operatingSystem": "Web",
+    "url": "https://huggingface.co/spaces/zuhaibahmed7/researchpilot",
+    "author": { "@type": "Person", "name": "Zuhaib Ahmed", "url": "https://portfolio-rho-nine-gb5m68vt3j.vercel.app/" },
+    "techStack": ["Python", "GitHub Models", "FastAPI", "OpenAI SDK", "SSE", "Docker"],
+    "applicationSubCategory": "Multi-Agent System"
+  }
+  </script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 48px 24px; color: #d6d6e0; background: #0a0a0f; line-height: 1.7; }
+    h1 { font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; }
+    h2 { color: #a78bfa; margin-top: 2.5rem; font-size: 1.3rem; }
+    a { color: #818cf8; }
+    .back { display: inline-block; margin-bottom: 2rem; color: #818cf8; text-decoration: none; }
+    .tech { display: flex; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+    .tech span { background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; color: #c4b5fd; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 0.5rem 0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back to Portfolio</a>
+  <article>
+    <h1>ResearchPilot</h1>
+    <p style="color:#9ca3af; font-size:1.1rem;">Multi-Agent Autonomous Research System</p>
+    <div class="tech">
+      <span>Python</span><span>GitHub Models</span><span>FastAPI</span><span>OpenAI SDK</span><span>SSE</span><span>Docker</span>
+    </div>
+
+    <h2>Overview</h2>
+    <p>ResearchPilot is a multi-agent AI reasoning system built for the Microsoft Agents League Hackathon (Reasoning Agents track). It autonomously decomposes research questions, retrieves sourced evidence, self-critiques coverage, and synthesizes structured reports with citations.</p>
+
+    <h2>Architecture</h2>
+    <p>The system uses a 4-agent pipeline:</p>
+    <ul>
+      <li><strong>Planner</strong> — Decomposes complex research questions into sub-questions</li>
+      <li><strong>Researcher</strong> — Retrieves sourced evidence for each sub-question</li>
+      <li><strong>Critic</strong> — Evaluates coverage and triggers re-research when confidence falls below threshold</li>
+      <li><strong>Synthesizer</strong> — Combines findings into a structured report with citations</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Self-critique re-research loop — the Critic agent detects knowledge gaps and triggers additional research</li>
+      <li>Real-time web frontend using FastAPI + Server-Sent Events (SSE) streaming live pipeline progress</li>
+      <li>Built on GitHub Models free inference endpoint (GPT-4o/GPT-4o-mini)</li>
+      <li>Deployed on Hugging Face Spaces via Docker</li>
+    </ul>
+
+    <h2>Live Demo</h2>
+    <p><a href="https://huggingface.co/spaces/zuhaibahmed7/researchpilot" target="_blank" rel="noopener">Try ResearchPilot on Hugging Face Spaces &rarr;</a></p>
+
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/">Portfolio</a></li>
+      <li><a href="https://github.com/zuhaibahmed7">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/zuhaib-ahmed-69951a39a">LinkedIn</a></li>
+    </ul>
+  </article>
+</body>
+</html>

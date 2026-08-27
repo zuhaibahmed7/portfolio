@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentic AI Architecture: Beyond Single-Prompt Wrappers | Zuhaib Ahmed</title>
+  <meta name="description" content="Why single-prompt AI systems fail for complex tasks, and how agentic architectures with planning, reflection, and tool use create more reliable AI systems." />
+  <link rel="canonical" href="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/agentic-ai-architecture" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Agentic AI Architecture: Beyond Single-Prompt Wrappers" />
+  <meta property="og:description" content="Why single-prompt AI fails for complex tasks, and how agentic architectures fix it." />
+  <meta property="og:image" content="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="article:published_time" content="2026-08-27" />
+  <meta property="article:author" content="Zuhaib Ahmed" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Agentic AI Architecture: Beyond Single-Prompt Wrappers",
+    "description": "Why single-prompt AI systems fail for complex tasks, and how agentic architectures create more reliable AI.",
+    "author": { "@type": "Person", "name": "Zuhaib Ahmed" },
+    "datePublished": "2026-08-27",
+    "url": "https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/agentic-ai-architecture"
+  }
+  </script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; max-width: 740px; margin: 0 auto; padding: 48px 24px; color: #d6d6e0; background: #0a0a0f; line-height: 1.8; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
+    h2 { color: #f472b6; margin-top: 2.5rem; font-size: 1.25rem; }
+    h3 { color: #f9a8d4; margin-top: 1.5rem; }
+    a { color: #818cf8; }
+    .back { display: inline-block; margin-bottom: 2rem; color: #818cf8; text-decoration: none; }
+    .meta { color: #9ca3af; font-size: 0.9rem; margin-bottom: 2rem; }
+    code { background: rgba(244,114,182,0.15); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    pre { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; }
+    pre code { background: none; padding: 0; }
+    ul, ol { padding-left: 1.5rem; }
+    li { margin: 0.4rem 0; }
+    blockquote { border-left: 3px solid #f472b6; padding-left: 1rem; color: #9ca3af; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back to Portfolio</a>
+  <article>
+    <h1>Agentic AI Architecture: Beyond Single-Prompt Wrappers</h1>
+    <p class="meta">August 27, 2026 · 7 min read</p>
+
+    <p>The AI industry has a naming problem. Every chatbot calls itself an "AI agent," but most are just <code>fetch(api, { body: prompt })</code> with a nice UI. Real agents plan, reflect, use tools, and recover from failures. Here's what I've learned building actual agentic systems.</p>
+
+    <h2>The Single-Prompt Trap</h2>
+    <p>Here's what most "AI-powered" apps do:</p>
+    <pre><code>user_input → LLM → output</code></pre>
+    <p>This works for simple tasks. But for anything requiring multiple steps, reasoning, or quality control, it falls apart. The LLM gets one shot. No planning, no reflection, no error recovery.</p>
+
+    <h2>What Makes a System "Agentic"?</h2>
+    <p>True agentic systems have four key properties:</p>
+
+    <h3>1. Planning</h3>
+    <p>The system breaks complex tasks into sub-tasks before executing. Instead of "research this topic," it says "identify key sub-questions, research each one, then synthesize."</p>
+
+    <h3>2. Reflection</h3>
+    <p>The system evaluates its own output. "Did I cover all aspects? Are there knowledge gaps? Is the confidence high enough?"</p>
+
+    <h3>3. Tool Use</h3>
+    <p>The system can call external tools — web search, code execution, databases — rather than relying solely on its training data.</p>
+
+    <h3>4. Iteration</h3>
+    <p>The system can redo work. If the Critic finds gaps, the Researcher goes back and fills them. This loop continues until quality thresholds are met.</p>
+
+    <h2>Pattern: The Re-Act Loop</h2>
+    <p>The most common agentic pattern I use:</p>
+    <pre><code>REASON → decide next action
+ACT → execute the action
+OBSERVE → check the result
+REFLECT → evaluate quality
+  ↓ (if not good enough)
+REASON → try again with new info</code></pre>
+
+    <h2>Pattern: Multi-Agent Pipelines</h2>
+    <p>For complex tasks, I split responsibilities across specialized agents:</p>
+    <ul>
+      <li><strong>Planner</strong> — Decomposes the task (never does the actual work)</li>
+      <li><strong>Executor</strong> — Does the work (research, code, analysis)</li>
+      <li><strong>Critic</strong> — Evaluates quality (catches errors, gaps)</li>
+      <li><strong>Synthesizer</strong> — Combines outputs into a final result</li>
+    </ul>
+
+    <h2>The Critic Agent Is the Secret Sauce</h2>
+    <p>Most people skip this. They build Planner → Executor → Done. But without a Critic, errors compound. The Critic acts as a quality gate:</p>
+    <ul>
+      <li>Detects knowledge gaps in research</li>
+      <li>Identifies logical inconsistencies</li>
+      <li>Triggers re-execution when confidence is low</li>
+      <li>Provides feedback for continuous improvement</li>
+    </ul>
+
+    <h2>Real-World Example: ResearchPilot</h2>
+    <p>I built <a href="/projects/researchpilot">ResearchPilot</a> using this exact pattern. The 4-agent pipeline (Planner → Researcher → Critic → Synthesizer) with self-critique loops produces research reports that are significantly better than a single-prompt approach.</p>
+
+    <h2>Practical Tips</h2>
+    <ul>
+      <li><strong>Start simple:</strong> Add one agent at a time. Don't build a 10-agent system on day one.</li>
+      <li><strong>Make agents narrow:</strong> One agent, one job. The Planner shouldn't also do research.</li>
+      <li><strong>Add the Critic early:</strong> Quality control is what separates agents from chatbots.</li>
+      <li><strong>Stream output:</strong> Real-time feedback builds trust and helps debugging.</li>
+      <li><strong>Handle failures gracefully:</strong> Agents will make mistakes. Build retry logic.</li>
+    </ul>
+
+    <blockquote>The future of AI isn't bigger models — it's smarter systems. Multi-agent architectures with planning, reflection, and tool use will outperform single massive models on complex tasks.</blockquote>
+
+    <p><a href="/">&larr; Back to Portfolio</a></p>
+  </article>
+</body>
+</html>

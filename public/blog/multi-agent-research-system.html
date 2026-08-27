@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How I Built a Multi-Agent Research System with LLMs | Zuhaib Ahmed</title>
+  <meta name="description" content="A technical deep-dive into building ResearchPilot — a 4-agent autonomous research system using Planner, Researcher, Critic, and Synthesizer agents with GitHub Models and FastAPI." />
+  <link rel="canonical" href="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/multi-agent-research-system" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How I Built a Multi-Agent Research System with LLMs" />
+  <meta property="og:description" content="Technical deep-dive into building a 4-agent autonomous research pipeline with self-critique loops." />
+  <meta property="og:image" content="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="article:published_time" content="2026-08-27" />
+  <meta property="article:author" content="Zuhaib Ahmed" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How I Built a Multi-Agent Research System with LLMs",
+    "description": "A technical deep-dive into building ResearchPilot — a 4-agent autonomous research system with self-critique loops.",
+    "author": { "@type": "Person", "name": "Zuhaib Ahmed" },
+    "datePublished": "2026-08-27",
+    "url": "https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/multi-agent-research-system"
+  }
+  </script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; max-width: 740px; margin: 0 auto; padding: 48px 24px; color: #d6d6e0; background: #0a0a0f; line-height: 1.8; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
+    h2 { color: #a78bfa; margin-top: 2.5rem; font-size: 1.25rem; }
+    h3 { color: #c4b5fd; margin-top: 1.5rem; }
+    a { color: #818cf8; }
+    .back { display: inline-block; margin-bottom: 2rem; color: #818cf8; text-decoration: none; }
+    .meta { color: #9ca3af; font-size: 0.9rem; margin-bottom: 2rem; }
+    code { background: rgba(167,139,250,0.15); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    pre { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; }
+    pre code { background: none; padding: 0; }
+    ul, ol { padding-left: 1.5rem; }
+    li { margin: 0.4rem 0; }
+    blockquote { border-left: 3px solid #a78bfa; padding-left: 1rem; color: #9ca3af; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back to Portfolio</a>
+  <article>
+    <h1>How I Built a Multi-Agent Research System with LLMs</h1>
+    <p class="meta">August 27, 2026 · 8 min read</p>
+
+    <p>Most AI tools today are single-prompt wrappers — you ask a question, you get an answer. But what if the AI could plan its own research, critique its own work, and fill in the gaps automatically? That's what I set out to build with <strong>ResearchPilot</strong>.</p>
+
+    <h2>The Problem with Single-Prompt AI</h2>
+    <p>When you ask a language model a complex research question, it gives you one shot. If it misses something, you have to rephrase and try again. There's no self-reflection, no quality control, and no systematic coverage.</p>
+
+    <h2>The Architecture: 4 Agents, 1 Pipeline</h2>
+    <p>ResearchPilot uses four specialized agents working together:</p>
+
+    <h3>1. Planner Agent</h3>
+    <p>Takes a complex research question and decomposes it into focused sub-questions. Think of it as creating a research outline before diving in.</p>
+
+    <h3>2. Researcher Agent</h3>
+    <p>Takes each sub-question and retrieves evidence from the web. It searches, reads, and extracts relevant information with source citations.</p>
+
+    <h3>3. Critic Agent</h3>
+    <p>This is where it gets interesting. The Critic evaluates the research quality and coverage. If it finds gaps or low-confidence areas, it triggers additional research rounds.</p>
+
+    <h3>4. Synthesizer Agent</h3>
+    <p>Combines all findings into a structured report with proper citations and confidence scores.</p>
+
+    <h2>The Self-Critique Loop</h2>
+    <p>The key innovation is the feedback loop between Researcher and Critic:</p>
+    <pre><code>Researcher → produces evidence
+Critic → evaluates quality
+  ↓ (if confidence < threshold)
+Researcher → re-researches gaps
+  ↓ (repeat until confident)
+Synthesizer → final report</code></pre>
+
+    <p>This means the system doesn't just accept the first answer — it actively seeks to improve its own output.</p>
+
+    <h2>Tech Stack</h2>
+    <ul>
+      <li><strong>Backend:</strong> Python + FastAPI with Server-Sent Events for real-time streaming</li>
+      <li><strong>LLM:</strong> GitHub Models free inference (GPT-4o/GPT-4o-mini via OpenAI SDK)</li>
+      <li><strong>Frontend:</strong> React with live pipeline progress visualization</li>
+      <li><strong>Deployment:</strong> Docker on Hugging Face Spaces</li>
+    </ul>
+
+    <h2>Key Takeaways</h2>
+    <ul>
+      <li>Multi-agent systems are more reliable than single-prompt approaches for complex tasks</li>
+      <li>Self-critique loops dramatically improve output quality</li>
+      <li>The Planner agent is crucial — good decomposition leads to better research</li>
+      <li>Real-time streaming makes the system feel alive and builds trust</li>
+    </ul>
+
+    <blockquote>ResearchPilot was built for the Microsoft Agents League Hackathon (Reasoning Agents track). It's open source and available on <a href="https://huggingface.co/spaces/zuhaibahmed7/researchpilot" target="_blank">Hugging Face Spaces</a>.</blockquote>
+
+    <p><a href="/">&larr; Back to Portfolio</a></p>
+  </article>
+</body>
+</html>

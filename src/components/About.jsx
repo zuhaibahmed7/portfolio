@@ -56,7 +56,7 @@ export default function About() {
 
   const facts = [
     { Icon: MapPin, label: 'Location', value: profile.location },
-    { Icon: GraduationCap, label: 'Education', value: `${education.school} - continue` },
+    { Icon: GraduationCap, label: 'Education', value: `${education.school} (${education.period})` },
     { Icon: Award, label: 'Award', value: 'SEEF Sindh Government Scholarship recipient' },
     { Icon: Sparkles, label: 'Focus', value: 'AI, Machine Learning & Full-Stack Development' },
   ];

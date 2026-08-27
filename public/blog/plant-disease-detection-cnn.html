@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building a Plant Disease Detection System with CNNs | Zuhaib Ahmed</title>
+  <meta name="description" content="How I built AgroVision — an AI plant disease prediction system using a CNN trained on 54,000+ leaf images across 38 disease classes with TensorFlow and Streamlit." />
+  <link rel="canonical" href="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/plant-disease-detection-cnn" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Building a Plant Disease Detection System with CNNs" />
+  <meta property="og:description" content="CNN trained on 54K+ leaf images. 88% accuracy. From dataset to deployed Streamlit app." />
+  <meta property="og:image" content="https://portfolio-rho-nine-gb5m68vt3j.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="article:published_time" content="2026-08-27" />
+  <meta property="article:author" content="Zuhaib Ahmed" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Building a Plant Disease Detection System with CNNs",
+    "description": "How I built AgroVision — an AI plant disease prediction system using a CNN trained on 54,000+ leaf images.",
+    "author": { "@type": "Person", "name": "Zuhaib Ahmed" },
+    "datePublished": "2026-08-27",
+    "url": "https://portfolio-rho-nine-gb5m68vt3j.vercel.app/blog/plant-disease-detection-cnn"
+  }
+  </script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; max-width: 740px; margin: 0 auto; padding: 48px 24px; color: #d6d6e0; background: #0a0a0f; line-height: 1.8; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
+    h2 { color: #34d399; margin-top: 2.5rem; font-size: 1.25rem; }
+    h3 { color: #6ee7b7; margin-top: 1.5rem; }
+    a { color: #818cf8; }
+    .back { display: inline-block; margin-bottom: 2rem; color: #818cf8; text-decoration: none; }
+    .meta { color: #9ca3af; font-size: 0.9rem; margin-bottom: 2rem; }
+    code { background: rgba(52,211,153,0.15); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    pre { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; }
+    pre code { background: none; padding: 0; }
+    ul, ol { padding-left: 1.5rem; }
+    li { margin: 0.4rem 0; }
+    blockquote { border-left: 3px solid #34d399; padding-left: 1rem; color: #9ca3af; margin: 1.5rem 0; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 1.5rem 0; }
+    .stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; text-align: center; }
+    .stat .num { font-size: 1.5rem; font-weight: 700; color: #34d399; }
+    .stat .label { font-size: 0.8rem; color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back to Portfolio</a>
+  <article>
+    <h1>Building a Plant Disease Detection System with CNNs</h1>
+    <p class="meta">August 27, 2026 · 6 min read</p>
+
+    <div class="stats">
+      <div class="stat"><div class="num">54K+</div><div class="label">Training Images</div></div>
+      <div class="stat"><div class="num">88%</div><div class="label">Validation Accuracy</div></div>
+      <div class="stat"><div class="num">38</div><div class="label">Disease Classes</div></div>
+    </div>
+
+    <p>Plant diseases cost the global agriculture industry billions of dollars annually. Early detection is critical, but most farmers don't have access to plant pathologists. I built <strong>AgroVision</strong> to bridge this gap — an AI system that identifies plant diseases from a simple photo.</p>
+
+    <h2>The Dataset</h2>
+    <p>I used the <strong>PlantVillage dataset</strong> — 54,305 images of plant leaves across 14 crop species and 38 disease classes (including healthy). The images are already segmented (background removed) and standardized to 256x256 pixels.</p>
+
+    <h2>Model Architecture</h2>
+    <p>I trained a custom CNN with the following architecture:</p>
+    <pre><code>Input (224x224x3)
+  → Conv2D(32, 3x3) + ReLU + MaxPool
+  → Conv2D(64, 3x3) + ReLU + MaxPool
+  → Conv2D(128, 3x3) + ReLU + MaxPool
+  → Conv2D(256, 3x3) + ReLU + MaxPool
+  → Flatten → Dense(512) → Dropout(0.5)
+  → Dense(38, softmax)</code></pre>
+
+    <h2>Training Results</h2>
+    <ul>
+      <li><strong>Training accuracy:</strong> 98% after 25 epochs</li>
+      <li><strong>Validation accuracy:</strong> 88% (good generalization)</li>
+      <li><strong>Loss convergence:</strong> Stable after epoch 15</li>
+    </ul>
+
+    <h2>Building the Interface</h2>
+    <p>I chose <strong>Streamlit</strong> for the web interface because it's perfect for ML demos:</p>
+    <ul>
+      <li>Upload a leaf photo (drag & drop or camera)</li>
+      <li>Image is preprocessed (224x224 resize, normalization)</li>
+      <li>Model predicts disease class with confidence score</li>
+      <li>Results displayed instantly with disease information</li>
+    </ul>
+
+    <h2>Deployment with Docker</h2>
+    <p>The entire app is containerized with Docker for reproducibility:</p>
+    <pre><code>FROM python:3.10-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8501
+CMD ["streamlit", "run", "app.py"]</code></pre>
+
+    <h2>Lessons Learned</h2>
+    <ul>
+      <li>Data quality matters more than model complexity — the PlantVillage dataset's clean segmentation made a huge difference</li>
+      <li>Data augmentation (rotation, flip, zoom) helped prevent overfitting</li>
+      <li>The biggest challenge was class imbalance — some diseases had far fewer samples</li>
+      <li>Streamlit made the demo accessible to non-technical users</li>
+    </ul>
+
+    <blockquote>AgroVision is designed to help farmers in developing countries where access to plant pathologists is limited. The system works offline once deployed, making it suitable for areas with limited internet connectivity.</blockquote>
+
+    <p><a href="/">&larr; Back to Portfolio</a></p>
+  </article>
+</body>
+</html>
