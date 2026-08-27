@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Facebook, Github, Instagram, Linkedin, Mail, Phone, Send, Twitter, Youtube } from 'lucide-react';
+import { Calendar, Facebook, Github, Globe, Instagram, Linkedin, Mail, Phone, Send, Twitter, Youtube } from 'lucide-react';
 import { profile, socials } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
 import { useTranslations } from '../hooks/useTranslations.js';
@@ -88,6 +88,10 @@ export default function Contact() {
     { Icon: Instagram, label: 'Instagram', value: '@aiwithzuhaib', href: socials.instagram.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
     { Icon: Twitter, label: 'X (Twitter)', value: '@ZohaibAhmedMah2', href: socials.x.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
     { Icon: Facebook, label: 'Facebook', value: 'Zuhaib Ahmed', href: socials.facebook.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
+    { Icon: Globe, label: 'Kaggle', value: 'kaggle.com/zuhaib123', href: socials.kaggle.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
+    { Icon: Globe, label: 'HackerRank', value: 'hackerrank.com/shoaibmahar347', href: socials.hackerrank.href, glow: 'hover:shadow-glow hover:border-accent-violet/60' },
+    { Icon: Globe, label: 'Replit', value: 'replit.com/@zuhaibmahar234', href: socials.replit.href, glow: 'hover:shadow-glow-pink hover:border-accent-pink/60' },
+    { Icon: Globe, label: 'Lovable', value: 'lovable.dev/@zulodro_z', href: socials.lovable.href, glow: 'hover:shadow-glow-cyan hover:border-accent-cyan/60' },
   ];
 
   return (

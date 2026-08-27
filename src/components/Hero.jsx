@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Download, Facebook, Github, Instagram, Layers, Linkedin, Mail, Twitter, X, Youtube, Zap } from 'lucide-react';
+import { ArrowRight, ChevronDown, Download, Facebook, Github, Globe, Instagram, Layers, Linkedin, Mail, Twitter, X, Youtube, Zap } from 'lucide-react';
 import { profile, roles, socials } from '../data/content.js';
 import { useTranslations } from '../hooks/useTranslations.js';
 import { useTypewriter } from '../hooks/useTypewriter.js';
@@ -153,6 +153,10 @@ export default function Hero() {
     { Icon: Instagram, href: socials.instagram.href, label: socials.instagram.label },
     { Icon: Twitter, href: socials.x.href, label: socials.x.label },
     { Icon: Facebook, href: socials.facebook.href, label: socials.facebook.label },
+    { Icon: Globe, href: socials.kaggle.href, label: socials.kaggle.label },
+    { Icon: Globe, href: socials.hackerrank.href, label: socials.hackerrank.label },
+    { Icon: Globe, href: socials.replit.href, label: socials.replit.label },
+    { Icon: Globe, href: socials.lovable.href, label: socials.lovable.label },
     { Icon: Mail, href: `mailto:${profile.email}`, label: 'Email' },
   ];
 

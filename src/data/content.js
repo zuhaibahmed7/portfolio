@@ -39,6 +39,10 @@ export const socials = {
     label: 'Facebook',
     href: 'https://www.facebook.com/share/1C6SUjEjxX/',
   },
+  kaggle: { label: 'Kaggle', href: 'https://www.kaggle.com/zuhaib123' },
+  hackerrank: { label: 'HackerRank', href: 'https://www.hackerrank.com/profile/shoaibmahar347' },
+  replit: { label: 'Replit', href: 'https://replit.com/@zuhaibmahar234' },
+  lovable: { label: 'Lovable', href: 'https://lovable.dev/@zulodro_z' },
 };
 
 export const education = {
