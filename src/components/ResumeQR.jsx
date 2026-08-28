@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion';
    a real QR code image (no heavy library needed).
 ------------------------------------------------------------------- */
 
-const RESUME_URL = 'https://portfolio-rho-nine-gb5m68vt3j.vercel.app/resume.pdf';
+const RESUME_URL = 'https://zuhaibahmed.vercel.app/resume.pdf';
 
 export default function ResumeQR() {
   const reduced = useReducedMotion();

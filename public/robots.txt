@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Crawl-delay: 10
 
-Sitemap: https://portfolio-rho-nine-gb5m68vt3j.vercel.app/sitemap.xml
+Sitemap: https://zuhaibahmed.vercel.app/sitemap.xml
