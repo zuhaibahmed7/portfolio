@@ -7,7 +7,7 @@ info:
     name: Zuhaib Ahmed
     email: zuhaibmahar234@gmail.com
 servers:
-  - url: https://zuhaibahmed7.github.io/portfolio
+  - url: https://zuhaibahmed.vercel.app
     description: Production server
   - url: http://localhost:5173
     description: Development server
@@ -276,5 +276,5 @@ paths:
                       nullable: true
 externalDocs:
   description: Learn more about this API
-  url: https://zuhaibahmed7.github.io/portfolio
+  url: https://zuhaibahmed.vercel.app
 components: {}
