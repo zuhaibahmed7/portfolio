@@ -186,30 +186,9 @@ export default function Contact() {
         <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
           {!isQuick && (
             <Reveal delay={0.35} className="mt-12 print:hidden">
-              <div className="grid items-center gap-8 lg:grid-cols-5 lg:gap-4">
-              {/* Character illustration — right side, blends with background */}
-              <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end">
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="relative -mr-8 xl:-mr-12"
-                >
-                  {/* Subtle glow behind character */}
-                  <div className="absolute -inset-12 bg-accent-violet/10 blur-[80px]" />
-                  <div className="absolute -inset-8 bg-accent-cyan/8 blur-[60px]" />
-                  {/* User's illustration — no background, blends into dark portfolio */}
-                  <img
-                    src="/images/contact-avatar.png"
-                    alt="Zuhaib Ahmed — developer illustration"
-                    className="relative w-[320px] xl:w-[400px] object-contain drop-shadow-[0_0_40px_rgba(124,58,237,0.15)]"
-                    loading="lazy"
-                    style={{ mixBlendMode: 'lighten' }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Form */}
-              <div className="lg:col-span-3">
+              <div className="relative flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-0">
+              {/* Form — left side */}
+              <div className="relative z-10 w-full lg:w-[45%] xl:w-[42%] shrink-0">
               <form onSubmit={onSubmit} className="glass-card--border-gradient glass-card rounded-3xl p-7 sm:p-8" noValidate>
                 {status === 'sent' ? (
                   <div className="flex flex-col items-center gap-4 py-8 text-center">
@@ -334,6 +313,28 @@ export default function Contact() {
                 )}
               </form>
               </div>
+
+              {/* Character illustration — right side, extends to edge */}
+              <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[58%] xl:w-[55%]">
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="relative"
+                >
+                  {/* Subtle glow behind character */}
+                  <div className="absolute -inset-16 bg-accent-violet/10 blur-[100px]" />
+                  <div className="absolute -inset-10 bg-accent-cyan/8 blur-[70px]" />
+                  {/* User's illustration — extends to right edge */}
+                  <img
+                    src="/images/contact-avatar.png"
+                    alt="Zuhaib Ahmed — developer illustration"
+                    className="w-full h-auto object-contain object-right"
+                    loading="lazy"
+                    style={{ filter: 'drop-shadow(0 0 60px rgba(124,58,237,0.2))', mixBlendMode: 'lighten' }}
+                  />
+                </motion.div>
+              </div>
+
               </div>
             </Reveal>
           )}
