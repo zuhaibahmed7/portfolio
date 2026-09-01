@@ -186,23 +186,24 @@ export default function Contact() {
         <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
           {!isQuick && (
             <Reveal delay={0.35} className="mt-12 print:hidden">
-              <div className="mx-auto grid max-w-5xl items-center gap-8 lg:grid-cols-5">
-              {/* Character illustration — right side */}
-              <div className="hidden lg:col-span-2 lg:flex lg:justify-center">
+              <div className="grid items-center gap-8 lg:grid-cols-5 lg:gap-4">
+              {/* Character illustration — right side, blends with background */}
+              <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end">
                 <motion.div
-                  animate={{ y: [0, -12, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  className="relative"
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="relative -mr-8 xl:-mr-12"
                 >
-                  {/* Glow behind character */}
-                  <div className="absolute -inset-8 rounded-full bg-accent-violet/20 blur-3xl" />
-                  <div className="absolute -inset-4 rounded-full bg-accent-cyan/10 blur-2xl" />
-                  {/* User's illustration */}
+                  {/* Subtle glow behind character */}
+                  <div className="absolute -inset-12 bg-accent-violet/10 blur-[80px]" />
+                  <div className="absolute -inset-8 bg-accent-cyan/8 blur-[60px]" />
+                  {/* User's illustration — no background, blends into dark portfolio */}
                   <img
                     src="/images/contact-avatar.png"
                     alt="Zuhaib Ahmed — developer illustration"
-                    className="relative w-[300px] xl:w-[360px] rounded-2xl object-contain"
+                    className="relative w-[320px] xl:w-[400px] object-contain drop-shadow-[0_0_40px_rgba(124,58,237,0.15)]"
                     loading="lazy"
+                    style={{ mixBlendMode: 'lighten' }}
                   />
                 </motion.div>
               </div>
