@@ -1,13 +1,10 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { ViewProvider } from './context/ViewContext.jsx';
 import { SectionGate } from './components/ui.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import Intro from './components/Intro.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
-import CinematicBackground from './components/CinematicBackground.jsx';
 import Navbar from './components/Navbar.jsx';
-import ScrollRail from './components/ScrollRail.jsx';
-import { initSmoothScroll } from './lib/smoothScroll.js';
 
 
 import Hero from './components/Hero.jsx';
@@ -32,13 +29,6 @@ import Footer from './components/Footer.jsx';
 import Chatbot from './components/Chatbot.jsx';
 import NotFound from './components/NotFound.jsx';
 
-function SmoothScroll() {
-  useEffect(() => {
-    initSmoothScroll();
-  }, []);
-  return null;
-}
-
 function Site() {
   // SPA-without-router: handle /demo routes + 404
   const path = typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '';
@@ -55,15 +45,6 @@ function Site() {
       <a href="#about" className="skip-link">
         Skip to content
       </a>
-
-      {/* Lenis smooth scrolling (skipped for reduced-motion users) */}
-      <SmoothScroll />
-
-      {/* Top scroll progress bar + right section dot-rail */}
-      <ScrollRail />
-
-      {/* Full-page cinematic neural-network backdrop (sits behind all content) */}
-      <CinematicBackground />
 
       <Navbar />
 

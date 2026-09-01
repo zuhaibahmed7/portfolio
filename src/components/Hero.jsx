@@ -8,7 +8,6 @@ import { useView } from '../context/ViewContext.jsx';
 import { CopyEmailButton, Magnetic } from './ui.jsx';
 import { useTheme } from '../hooks/useTheme.js';
 import { track } from '../analytics.js';
-import RobotAvatar, { DockedRobot } from './RobotAvatar.jsx';
 
 // The 3D scene is code-split so it never blocks the first paint of the text
 const Scene3D = lazy(() => import('./Scene3D.jsx'));
@@ -158,7 +157,7 @@ export default function Hero() {
   ];
 
   return (
-    <section id="top" className="relative overflow-hidden" aria-label="Intro">
+    <section id="top" className="relative flex min-h-screen items-center overflow-hidden" aria-label="Intro">
       {/* ---------- Background layers ---------- */}
       <div className="grid-overlay absolute inset-0" aria-hidden="true" />
       <div className="aura -left-40 top-1/4 h-[480px] w-[480px] bg-accent-violet" aria-hidden="true" />
@@ -177,19 +176,8 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* ---------- Robot headline — alone at the top, everything else below ---------- */}
-      <div className="relative z-10 pt-24 sm:pt-28">
-        <RobotAvatar />
-      </div>
-
-      {/* Sitting robot docked at the right side of the bio. Lives in the
-          document (not fixed) so it stops here and scrolls away with the hero */}
-      <div className="pointer-events-none absolute bottom-[110px] right-[2.5%] z-[5] hidden w-[min(28vw,420px)] lg:block print:hidden">
-        <DockedRobot />
-      </div>
-
       {/* ---------- Content ---------- */}
-      <div className="container-x relative z-10 pb-24 pt-12 sm:pt-16">
+      <div className="container-x relative z-10 pb-24 pt-36 sm:pt-40">
         <motion.p
           {...fade(1.1)}
           className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-xs text-muted backdrop-blur"

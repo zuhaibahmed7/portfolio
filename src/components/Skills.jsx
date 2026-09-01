@@ -1,16 +1,10 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Bot, BrainCircuit, Code2, Container, Database, PenTool, Server } from 'lucide-react';
 import { learningByCategory, skillCategories } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
 import { useTranslations } from '../hooks/useTranslations.js';
-import { useTheme } from '../hooks/useTheme.js';
 import { Pill, Reveal, SectionHeading } from './ui.jsx';
 import TechLogo from './TechLogo.jsx';
-import ErrorBoundary from './ErrorBoundary.jsx';
-
-// 3D skill constellation — code-split like the hero scene
-const SkillGalaxy = lazy(() => import('./SkillGalaxy.jsx'));
 
 // Icon mapping per skill category
 const ICONS = {
@@ -26,15 +20,6 @@ const ICONS = {
 export default function Skills() {
   const { isQuick, view } = useView();
   const t = useTranslations();
-  const reduced = useReducedMotion();
-  const { isLight } = useTheme();
-  const [mountGalaxy, setMountGalaxy] = useState(false);
-
-  useEffect(() => {
-    if (reduced || isLight || window.innerWidth < 768) return undefined;
-    const t2 = setTimeout(() => setMountGalaxy(true), 250);
-    return () => clearTimeout(t2);
-  }, [reduced, isLight]);
 
   return (
     <section id="skills" className="relative overflow-hidden py-28 sm:py-32" aria-label="Skills">
@@ -51,16 +36,6 @@ export default function Skills() {
               : 'From multi-agent LLM pipelines and ML model training to backend APIs, containers and design — the stack I use to take ideas from notebook to deployment.'
           }
         />
-
-        {mountGalaxy && (
-          <div className="relative mt-10 h-[360px] sm:h-[420px]" aria-hidden="true">
-            <ErrorBoundary>
-              <Suspense fallback={null}>
-                <SkillGalaxy />
-              </Suspense>
-            </ErrorBoundary>
-          </div>
-        )}
 
         {/* Keyed by view so the quick/detailed swap crossfades */}
         <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>

@@ -23,8 +23,8 @@ KNOWLEDGE BASE:
 
 --- IDENTITY ---
 Name: Zuhaib Ahmed
-Current title/role: AI Engineer / Data Scientist / Aspiring Full-Stack Developer (student building in public)
-Location: Karachi Division, Sindh, Pakistan
+Current title/role: AI Engineer / Data Scientist / Full-Stack Developer (student building in public)
+Location: Khairpur Mir's, Sindh, Pakistan (Karachi Division)
 Email: zuhaibmahar234@gmail.com
 Phone: +92-327-3302678
 LinkedIn: linkedin.com/in/zuhaib-ahmed-69951a39a
@@ -33,10 +33,10 @@ YouTube: youtube.com/@aiwithzuhaib
 Hugging Face: huggingface.co/spaces/zuhaibahmed7/researchpilot
 
 --- SUMMARY ---
-AI Engineer, Data Scientist, and aspiring full-stack developer with a strong foundation in machine learning and statistical analysis. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder in the making, I care as much about whether something ships cleanly as whether it works in a notebook.
+AI Engineer and Data Scientist with a strong foundation in machine learning, statistical analysis, and full-stack development. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder, I care as much about whether something ships cleanly as whether it works in a notebook.
 
 --- BIO / ABOUT ---
-Computer Software Engineering student and aspiring full-stack developer, passionate about AI and Machine Learning. Spends his time building AI-powered applications, training ML models, and shipping them with clean interfaces and real deployment. Currently deepening skills in AI, Deep Learning, MLOps, and full-stack development. Long-term goal: become an AI/ML engineer who builds products that actually work in the real world, not just models in notebooks.
+Computer Software Engineering student passionate about AI, Machine Learning, and full-stack development. Spends his time building AI-powered applications, training ML models, and shipping them with clean interfaces and real deployment. Currently deepening skills in AI, Deep Learning, and MLOps. Long-term goal: become an AI/ML engineer who builds products that actually work in the real world, not just models in notebooks.
 
 --- EDUCATION & TIMELINE ---
 Institution: Sukkur IBA University, Sukkur, Pakistan

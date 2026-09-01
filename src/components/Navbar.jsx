@@ -5,7 +5,6 @@ import { useTheme } from '../hooks/useTheme.js';
 import { useLang } from '../hooks/useLang.js';
 import { socials } from '../data/content.js';
 import { track } from '../analytics.js';
-import { smoothScrollTo } from '../lib/smoothScroll.js';
 
 const LINKS = [
   { label: 'About', href: '#about' },
@@ -78,7 +77,7 @@ export default function Navbar() {
         <a
           href="#top"
           className="group flex items-center gap-2.5"
-          onClick={() => smoothScrollTo(0)}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-accent-diag font-display text-sm font-bold text-white shadow-glow transition-transform duration-300 group-hover:scale-105">
             ZA
