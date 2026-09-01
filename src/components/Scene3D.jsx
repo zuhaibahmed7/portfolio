@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Float, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ---------------------------------------------------------------------------
@@ -169,6 +169,162 @@ function FloatingShapes() {
 }
 
 /* ---------------------------------------------------------------------------
+   OrbitalRings — concentric wireframe rings rotating at different angles.
+   Creates a sci-fi / HUD aesthetic around the center of the scene.
+--------------------------------------------------------------------------- */
+function OrbitalRings() {
+  const group = useRef(null);
+
+  useFrame((state) => {
+    if (!group.current) return;
+    const t = state.clock.elapsedTime;
+    // Each ring rotates on a different axis at a different speed
+    group.current.children.forEach((ring, i) => {
+      ring.rotation.x = t * (0.15 + i * 0.08) + i * 1.2;
+      ring.rotation.y = t * (0.1 + i * 0.05) + i * 0.8;
+      ring.rotation.z = t * 0.03 + i * 0.5;
+    });
+  });
+
+  const ringConfigs = [
+    { radius: 3.2, tube: 0.015, color: '#7C3AED', opacity: 0.35 },
+    { radius: 4.0, tube: 0.012, color: '#22D3EE', opacity: 0.25 },
+    { radius: 4.8, tube: 0.01, color: '#EC4899', opacity: 0.18 },
+  ];
+
+  return (
+    <group ref={group}>
+      {ringConfigs.map((cfg, i) => (
+        <mesh key={i}>
+          <torusGeometry args={[cfg.radius, cfg.tube, 32, 100]} />
+          <meshBasicMaterial
+            color={cfg.color}
+            transparent
+            opacity={cfg.opacity}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   GlowingCore — a central pulsing sphere with distortion.
+   Pulses in size and emissive intensity, reacting to mouse position.
+--------------------------------------------------------------------------- */
+function GlowingCore() {
+  const mesh = useRef(null);
+
+  useFrame((state) => {
+    if (!mesh.current) return;
+    const t = state.clock.elapsedTime;
+    // Pulse scale
+    const scale = 1 + Math.sin(t * 1.2) * 0.12 + Math.sin(t * 2.7) * 0.06;
+    mesh.current.scale.setScalar(scale);
+    // Subtle rotation
+    mesh.current.rotation.x = t * 0.2;
+    mesh.current.rotation.y = t * 0.35;
+  });
+
+  return (
+    <mesh ref={mesh} position={[0, 0, -1]}>
+      <sphereGeometry args={[0.6, 32, 32]} />
+      <MeshDistortMaterial
+        color="#7C3AED"
+        emissive="#7C3AED"
+        emissiveIntensity={0.8}
+        roughness={0.2}
+        metalness={0.9}
+        distort={0.3}
+        speed={2}
+        transparent
+        opacity={0.7}
+      />
+    </mesh>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   EnergyBeams — thin glowing lines connecting nearby particles.
+   Creates a neural-network / constellation effect.
+--------------------------------------------------------------------------- */
+function EnergyBeams() {
+  const linesRef = useRef(null);
+  const maxLines = 120;
+  const maxDist = 3.5;
+
+  const { positions, colors } = useMemo(() => {
+    const pos = new Float32Array(maxLines * 6); // 2 vertices per line
+    const col = new Float32Array(maxLines * 6); // 2 colors per line
+    return { positions: pos, colors: col };
+  }, []);
+
+  useFrame((state) => {
+    if (!linesRef.current) return;
+    const t = state.clock.elapsedTime;
+    const geo = linesRef.current.geometry;
+    const posAttr = geo.attributes.position;
+    const colAttr = geo.attributes.color;
+    const posArr = posAttr.array;
+    const colArr = colAttr.array;
+
+    // Generate beam endpoints that orbit and pulse
+    for (let i = 0; i < maxLines; i++) {
+      const i6 = i * 6;
+      const angle1 = (i / maxLines) * Math.PI * 2 + t * 0.15;
+      const angle2 = angle1 + 0.4 + Math.sin(t * 0.5 + i) * 0.3;
+      const r1 = 2.5 + Math.sin(t * 0.8 + i * 0.7) * 1.5;
+      const r2 = 2.5 + Math.cos(t * 0.6 + i * 0.5) * 1.5;
+      const yOff1 = Math.sin(t * 0.4 + i * 1.1) * 2;
+      const yOff2 = Math.cos(t * 0.3 + i * 0.9) * 2;
+
+      posArr[i6] = Math.cos(angle1) * r1;
+      posArr[i6 + 1] = yOff1;
+      posArr[i6 + 2] = Math.sin(angle1) * r1 - 2;
+      posArr[i6 + 3] = Math.cos(angle2) * r2;
+      posArr[i6 + 4] = yOff2;
+      posArr[i6 + 5] = Math.sin(angle2) * r2 - 2;
+
+      // Color gradient along the beam
+      const brightness = 0.3 + Math.sin(t * 2 + i * 0.3) * 0.2;
+      const isViolet = i % 3 === 0;
+      const isCyan = i % 3 === 1;
+      if (isViolet) {
+        colArr[i6] = 0.486 * brightness; colArr[i6+1] = 0.227 * brightness; colArr[i6+2] = 0.929 * brightness;
+        colArr[i6+3] = 0.486 * brightness; colArr[i6+4] = 0.227 * brightness; colArr[i6+5] = 0.929 * brightness;
+      } else if (isCyan) {
+        colArr[i6] = 0.133 * brightness; colArr[i6+1] = 0.827 * brightness; colArr[i6+2] = 0.929 * brightness;
+        colArr[i6+3] = 0.133 * brightness; colArr[i6+4] = 0.827 * brightness; colArr[i6+5] = 0.929 * brightness;
+      } else {
+        colArr[i6] = 0.925 * brightness; colArr[i6+1] = 0.282 * brightness; colArr[i6+2] = 0.6 * brightness;
+        colArr[i6+3] = 0.925 * brightness; colArr[i6+4] = 0.282 * brightness; colArr[i6+5] = 0.6 * brightness;
+      }
+    }
+    posAttr.needsUpdate = true;
+    colAttr.needsUpdate = true;
+  });
+
+  return (
+    <lineSegments ref={linesRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </bufferGeometry>
+      <lineBasicMaterial
+        vertexColors
+        transparent
+        opacity={0.5}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        linewidth={1}
+      />
+    </lineSegments>
+  );
+}
+
+/* ---------------------------------------------------------------------------
    Scene3D — the hero background canvas.
    Mounted lazily by Hero (React.lazy) and skipped for reduced-motion users,
    who get a static CSS aurora fallback instead.
@@ -199,6 +355,9 @@ export default function Scene3D() {
 
       <ParticleField />
       <FloatingShapes />
+      <OrbitalRings />
+      <GlowingCore />
+      <EnergyBeams />
     </Canvas>
   );
 }
