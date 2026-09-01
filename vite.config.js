@@ -107,7 +107,7 @@ async function mountChatApi(middlewares) {
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.VERCEL ? '/portfolio/' : '/',
+  base: '/',
   plugins: [
     react(),
     {
