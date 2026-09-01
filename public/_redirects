@@ -1,0 +1,8 @@
+# Redirect old preview URLs to main domain
+# Note: These are path-based redirects within the same deployment.
+# Cross-domain redirects (portfolio-6wz5.vercel.app → zuhaibahmed.vercel.app)
+# must be configured in Vercel Dashboard → Project Settings → Domains
+
+# Clean trailing slashes
+/blog/:slug/ /blog/:slug 301
+/projects/:slug/ /projects/:slug 301

@@ -5,6 +5,66 @@ import { useView } from '../context/ViewContext.jsx';
 import { track } from '../analytics.js';
 
 /* ---------------------------------------------------------------------------
+   ScrambleText — decodes `text` from random glyphs when it enters the
+   viewport (terminal/decode aesthetic). Reduced motion renders plain text.
+--------------------------------------------------------------------------- */
+const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#';
+
+export function ScrambleText({ text, className = '' }) {
+  const reduced = useReducedMotion();
+  const ref = useRef(null);
+  const rafRef = useRef(0);
+  const [out, setOut] = useState(text);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (reduced || !el) {
+      setOut(text);
+      return undefined;
+    }
+
+    const play = () => {
+      cancelAnimationFrame(rafRef.current);
+      const start = performance.now();
+      const duration = 750;
+      const tick = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const reveal = Math.floor(p * text.length);
+        let s = text.slice(0, reveal);
+        for (let i = reveal; i < text.length; i++) {
+          s += text[i] === ' ' ? ' ' : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+        setOut(p < 1 ? s : text);
+        if (p < 1) rafRef.current = requestAnimationFrame(tick);
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          play();
+          io.disconnect();
+        }
+      },
+      { rootMargin: '-40px' }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [text, reduced]);
+
+  return (
+    <span ref={ref} className={className}>
+      <span aria-hidden="true">{out}</span>
+      <span className="sr-only">{text}</span>
+    </span>
+  );
+}
+
+/* ---------------------------------------------------------------------------
    SectionHeading — eyebrow ("01 · About"), gradient title, optional lead text.
    Reveals with a fade/slide-up when scrolled into view.
 --------------------------------------------------------------------------- */
@@ -24,7 +84,7 @@ export function SectionHeading({ index, eyebrow, title, lead, align = 'left' }) 
         {String(index).padStart(2, '0')} · {eyebrow}
       </span>
       <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl lg:text-5xl">
-        {title} <span className="text-gradient">.</span>
+        <ScrambleText text={title} /> <span className="text-gradient">.</span>
       </h2>
       {lead && <p className="max-w-2xl text-base leading-relaxed text-muted">{lead}</p>}
     </motion.div>
