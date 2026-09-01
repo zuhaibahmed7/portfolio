@@ -197,13 +197,82 @@ export default function Contact() {
                   {/* Glow behind character */}
                   <div className="absolute -inset-8 rounded-full bg-accent-violet/20 blur-3xl" />
                   <div className="absolute -inset-4 rounded-full bg-accent-cyan/10 blur-2xl" />
-                  {/* User's illustration */}
-                  <img
-                    src="/images/contact-avatar.png"
-                    alt="Zuhaib Ahmed — developer illustration"
-                    className="relative w-[300px] xl:w-[360px] rounded-2xl object-contain"
-                    loading="lazy"
-                  />
+                  {/* Developer character SVG */}
+                  <svg viewBox="0 0 400 450" className="relative w-[320px] xl:w-[380px]" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Bean bag chair */}
+                    <ellipse cx="200" cy="380" rx="140" ry="55" fill="#1a1a2e" />
+                    <ellipse cx="200" cy="370" rx="130" ry="50" fill="#16213e" />
+                    <ellipse cx="200" cy="365" rx="120" ry="45" fill="#0f3460" />
+                    {/* Body / hoodie */}
+                    <path d="M155 280 C155 240 175 210 200 200 C225 210 245 240 245 280 L250 340 C250 355 230 365 200 365 C170 365 150 355 150 340 Z" fill="#e74c3c" />
+                    {/* Hoodie details */}
+                    <path d="M185 230 L200 215 L215 230" stroke="#c0392b" strokeWidth="2" fill="none" />
+                    <line x1="200" y1="215" x2="200" y2="290" stroke="#c0392b" strokeWidth="1.5" opacity="0.5" />
+                    {/* Hood */}
+                    <path d="M160 240 C160 200 175 180 200 175 C225 180 240 200 240 240" stroke="#c0392b" strokeWidth="3" fill="none" opacity="0.6" />
+                    {/* Arms */}
+                    <path d="M155 290 C130 300 120 320 125 340" stroke="#e74c3c" strokeWidth="20" strokeLinecap="round" fill="none" />
+                    <path d="M245 290 C270 300 280 320 275 340" stroke="#e74c3c" strokeWidth="20" strokeLinecap="round" fill="none" />
+                    {/* Hands */}
+                    <circle cx="125" cy="345" r="12" fill="#f5cba7" />
+                    <circle cx="275" cy="345" r="12" fill="#f5cba7" />
+                    {/* Laptop */}
+                    <rect x="105" y="335" width="80" height="50" rx="4" fill="#2c3e50" />
+                    <rect x="110" y="340" width="70" height="35" rx="2" fill="#34495e" />
+                    {/* Screen code lines */}
+                    <line x1="118" y1="350" x2="145" y2="350" stroke="#2ecc71" strokeWidth="2" opacity="0.8" />
+                    <line x1="118" y1="356" x2="155" y2="356" stroke="#3498db" strokeWidth="2" opacity="0.8" />
+                    <line x1="118" y1="362" x2="140" y2="362" stroke="#9b59b6" strokeWidth="2" opacity="0.8" />
+                    <line x1="125" y1="368" x2="160" y2="368" stroke="#e67e22" strokeWidth="2" opacity="0.6" />
+                    {/* Laptop keyboard hint */}
+                    <rect x="100" y="385" width="90" height="5" rx="2" fill="#34495e" opacity="0.8" />
+                    {/* Head */}
+                    <circle cx="200" cy="165" r="50" fill="#f5cba7" />
+                    {/* Hair */}
+                    <path d="M150 155 C150 110 175 90 200 85 C225 90 250 110 250 155 C250 140 240 120 200 115 C160 120 150 140 150 155" fill="#2c1810" />
+                    <path d="M155 150 C155 130 170 115 200 110 C230 115 245 130 245 150 C245 135 235 120 200 118 C165 120 155 135 155 150" fill="#3d2314" />
+                    {/* Spiky hair top */}
+                    <path d="M170 105 L175 80 L185 100" fill="#2c1810" />
+                    <path d="M190 95 L195 70 L205 92" fill="#2c1810" />
+                    <path d="M210 100 L218 78 L225 98" fill="#2c1810" />
+                    {/* Eyes */}
+                    <ellipse cx="183" cy="162" rx="8" ry="9" fill="white" />
+                    <ellipse cx="217" cy="162" rx="8" ry="9" fill="white" />
+                    <circle cx="185" cy="163" r="4" fill="#2c1810" />
+                    <circle cx="219" cy="163" r="4" fill="#2c1810" />
+                    <circle cx="186" cy="162" r="1.5" fill="white" />
+                    <circle cx="220" cy="162" r="1.5" fill="white" />
+                    {/* Eyebrows */}
+                    <path d="M173 150 Q183 145 193 150" stroke="#2c1810" strokeWidth="2" fill="none" />
+                    <path d="M207 150 Q217 145 227 150" stroke="#2c1810" strokeWidth="2" fill="none" />
+                    {/* Smile */}
+                    <path d="M188 178 Q200 188 212 178" stroke="#c0392b" strokeWidth="2" fill="none" />
+                    {/* Phone in hand */}
+                    <rect x="260" y="320" width="22" height="38" rx="3" fill="#2c3e50" />
+                    <rect x="262" y="324" width="18" height="28" rx="1" fill="#3498db" opacity="0.3" />
+                    {/* Small table with books */}
+                    <rect x="290" y="310" width="50" height="5" rx="2" fill="#5d4e37" />
+                    <rect x="300" y="295" width="30" height="15" rx="2" fill="#e74c3c" />
+                    <rect x="305" y="282" width="25" height="13" rx="2" fill="#3498db" />
+                    <rect x="310" y="270" width="20" height="12" rx="2" fill="#2ecc71" />
+                    {/* Table leg */}
+                    <line x1="315" y1="315" x2="315" y2="365" stroke="#5d4e37" strokeWidth="3" />
+                    {/* Coffee mug */}
+                    <rect x="295" y="260" width="15" height="14" rx="2" fill="#ecf0f1" />
+                    <path d="M310 264 Q318 264 318 271 Q318 278 310 278" stroke="#bdc3c7" strokeWidth="1.5" fill="none" />
+                    {/* Steam */}
+                    <path d="M300 258 Q303 252 300 246" stroke="white" strokeWidth="1" opacity="0.3" />
+                    <path d="M306 256 Q309 250 306 244" stroke="white" strokeWidth="1" opacity="0.3" />
+                    {/* Backpack */}
+                    <rect x="335" y="340" width="35" height="45" rx="5" fill="#2c3e50" />
+                    <rect x="340" y="345" width="25" height="12" rx="2" fill="#34495e" />
+                    <text x="347" y="354" fill="#e74c3c" fontSize="7" fontWeight="bold">{'<>'}</text>
+                    {/* Plant */}
+                    <rect x="320" y="252" width="12" height="10" rx="2" fill="#27ae60" opacity="0.7" />
+                    <circle cx="326" cy="248" r="6" fill="#2ecc71" opacity="0.5" />
+                    <circle cx="322" cy="245" r="5" fill="#27ae60" opacity="0.5" />
+                    <circle cx="330" cy="246" r="5" fill="#2ecc71" opacity="0.5" />
+                  </svg>
                 </motion.div>
               </div>
 
