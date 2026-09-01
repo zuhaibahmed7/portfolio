@@ -7,21 +7,21 @@ export const profile = {
   name: 'Zuhaib Ahmed',
   firstName: 'Zuhaib',
   lastName: 'Ahmed',
-  title: 'AI Engineer / Data Scientist / AI & Full-Stack Developer',
-  location: "Khairpur Mir's, Sindh, Pakistan (Karachi Division)",
+  title: 'AI Engineer / Data Scientist / Aspiring Full-Stack Developer',
+  location: 'Karachi Division, Sindh, Pakistan',
   email: 'zuhaibmahar234@gmail.com',
   phone: '+92-327-3302678',
   phoneHref: '+923273302678',
   summary:
-    'AI Engineer and Data Scientist with a strong foundation in machine learning, statistical analysis, and full-stack development. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder, I care as much about whether something ships cleanly as whether it works in a notebook.',
-  bio: "I'm a Computer Software Engineering student, passionate about AI, Machine Learning, and full-stack development. I spend my time building AI-powered applications, training ML models, and shipping them with clean interfaces and real deployment. Currently deepening my skills in AI, Deep Learning, and MLOps. My goal is to become an AI/ML engineer who doesn't just build models — but builds products that actually work in the real world.",
+    'AI Engineer, Data Scientist, and aspiring full-stack developer with a strong foundation in machine learning and statistical analysis. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder in the making, I care as much about whether something ships cleanly as whether it works in a notebook.',
+  bio: "I'm a Computer Software Engineering student and an aspiring full-stack developer, passionate about AI and Machine Learning. I spend my time building AI-powered applications, training ML models, and shipping them with clean interfaces and real deployment. Currently deepening my skills in AI, Deep Learning, MLOps, and full-stack development. My goal is to become an AI/ML engineer who doesn't just build models — but builds products that actually work in the real world.",
 };
 
 // Rotating typewriter roles in the Hero
 export const roles = [
   'AI Engineer',
   'Data Scientist',
-  'Full-Stack Developer',
+  'Aspiring Full-Stack Developer',
   'Multi-Agent Systems Builder',
 ];
 
@@ -424,7 +424,7 @@ export const translations = {
     navNotes: 'Notes',
     navContact: 'Contact',
     heroStatus: 'Hi, I\u2019m available for AI & Data projects',
-    heroSummary: 'AI Engineer and Data Scientist with a strong foundation in machine learning, statistical analysis, and full-stack development. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder, I care as much about whether something ships cleanly as whether it works in a notebook.',
+    heroSummary: 'AI Engineer, Data Scientist, and aspiring full-stack developer with a strong foundation in machine learning and statistical analysis. I build and deploy real AI systems end-to-end — from model training and backend architecture to containerized, production-ready deployment. My current focus is agentic AI: designing multi-agent LLM pipelines that plan, research, self-critique, and synthesize, rather than relying on single-prompt wrappers. Equal parts data scientist and systems builder in the making, I care as much about whether something ships cleanly as whether it works in a notebook.',
     aboutTitle: 'Engineering intelligence into products',
     aboutLead: 'AI builder from Sindh, Pakistan — training models, wiring up agents, and shipping them to real users.',
     skillsTitle: 'A full-stack AI toolkit',

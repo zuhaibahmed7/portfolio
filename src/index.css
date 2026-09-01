@@ -22,7 +22,9 @@ html {
 
 body {
   @apply bg-base font-sans text-muted antialiased;
-  overflow-x: hidden;
+  /* clip (not hidden): hidden would make body a scroll container and break
+     position:sticky descendants like the Experience stacked cards */
+  overflow-x: clip;
 }
 
 ::selection {
@@ -183,6 +185,446 @@ body {
     opacity: 0.05;
   }
 
+  /* ---------------------------------------------------------------------------
+     Cinematic full-page background (Neural Drift canvas).
+     The canvas fades out toward the bottom of the viewport so section text
+     stays readable; a soft aurora fallback shows for light mode and
+     reduced-motion users where the canvas is hidden.
+  --------------------------------------------------------------------------- */
+  .cinematic-bg {
+    mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 96%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 96%);
+    opacity: 0.9;
+  }
+
+  .cinematic-fallback {
+    background:
+      radial-gradient(600px circle at 12% 20%, rgba(124, 58, 237, 0.07), transparent 60%),
+      radial-gradient(700px circle at 85% 35%, rgba(34, 211, 238, 0.07), transparent 60%),
+      radial-gradient(550px circle at 50% 75%, rgba(236, 72, 153, 0.05), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Robot avatar rig: paper-doll part animations */
+  .robot-crop {
+    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
+  }
+  .robot-laptop-fade {
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 97%);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent 97%);
+  }
+  .robot-eyelid {
+    position: absolute;
+    border-radius: 9999px;
+    background: #17110c;
+    opacity: 0;
+    transition: opacity 0.09s ease;
+    pointer-events: none;
+  }
+  .robot-eyelid[data-closed] {
+    opacity: 1;
+  }
+  .robot-mouth {
+    position: absolute;
+    border-radius: 9999px;
+    background: #0b0b0e;
+    transform: scaleY(1);
+    transform-origin: top center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .robot-mouth[data-talking] {
+    opacity: 1;
+    animation: robot-mouth 0.7s ease-in-out infinite;
+  }
+  @keyframes robot-mouth {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    30% {
+      transform: scaleY(2.1);
+    }
+    55% {
+      transform: scaleY(1.25);
+    }
+    80% {
+      transform: scaleY(1.9);
+    }
+  }
+  .robot-glow {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgba(150, 220, 255, 0.55), transparent 72%);
+    mix-blend-mode: screen;
+    animation: robot-glow 4.8s linear infinite;
+    pointer-events: none;
+  }
+  /* typing pulses every ~0.8s (matches robot-type), big flash = tab switch */
+  @keyframes robot-glow {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    8% {
+      opacity: 0.78;
+    }
+    16% {
+      opacity: 0.55;
+    }
+    25% {
+      opacity: 0.8;
+    }
+    33% {
+      opacity: 0.55;
+    }
+    42% {
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    56% {
+      opacity: 0.9;
+    }
+    63% {
+      opacity: 0.8;
+    }
+    70% {
+      opacity: 0.6;
+    }
+    79% {
+      opacity: 0.82;
+    }
+    88% {
+      opacity: 0.55;
+    }
+    94% {
+      opacity: 0.78;
+    }
+  }
+  .robot-screenflash {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgba(170, 235, 255, 0.8), transparent 70%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    animation: robot-screenflash 4.8s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes robot-screenflash {
+    0%,
+    50%,
+    70%,
+    100% {
+      opacity: 0;
+    }
+    55% {
+      opacity: 0.9;
+    }
+    60% {
+      opacity: 0.45;
+    }
+    65% {
+      opacity: 0.75;
+    }
+  }
+  .robot-type {
+    animation: robot-type 0.8s ease-in-out infinite;
+  }
+  @keyframes robot-type {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    25% {
+      translate: 0 1px;
+    }
+    50% {
+      translate: 0 0;
+    }
+    75% {
+      translate: 0 1.5px;
+    }
+  }
+  .robot-hand--l {
+    animation: robot-hand-type 0.3s ease-in-out infinite;
+  }
+  .robot-hand--r {
+    animation: robot-hand-type 0.3s ease-in-out infinite;
+    animation-delay: -0.15s;
+  }
+  @keyframes robot-hand-type {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-7%);
+    }
+  }
+  .robot-breathe {
+    transform-origin: 50% 100%;
+    animation: robot-breathe 3.2s ease-in-out infinite;
+  }
+  @keyframes robot-breathe {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.015);
+    }
+  }
+  .robot-head {
+    transform-origin: 50% 88%;
+    animation: robot-head-sway 4.6s ease-in-out infinite;
+  }
+  @keyframes robot-head-sway {
+    0%,
+    100% {
+      transform: rotate(0deg) translateX(0);
+    }
+    28% {
+      transform: rotate(1.4deg) translateX(0.6%);
+    }
+    62% {
+      transform: rotate(-1.1deg) translateX(-0.4%);
+    }
+  }
+  .robot-ant--l {
+    transform-origin: 65% 98%;
+    animation: robot-ant-sway 2.3s ease-in-out infinite;
+  }
+  .robot-ant--r {
+    transform-origin: 35% 98%;
+    animation: robot-ant-sway 2s ease-in-out infinite reverse;
+  }
+  @keyframes robot-ant-sway {
+    0%,
+    100% {
+      transform: rotate(-5deg);
+    }
+    50% {
+      transform: rotate(6deg);
+    }
+  }
+  .robot-arm--l {
+    transform-origin: 50% 6%;
+    /* wave "hi" once (after the intro), then settle into the idle swing */
+    animation:
+      robot-wave 3.8s ease-in-out 1.5s 1,
+      robot-arm-swing 2.8s ease-in-out 5.3s infinite;
+  }
+  .robot-arm--r {
+    transform-origin: 50% 6%;
+    animation: robot-arm-swing 2.8s ease-in-out infinite;
+    animation-delay: -1.4s;
+  }
+  @keyframes robot-wave {
+    0% {
+      transform: rotate(0deg);
+    }
+    12% {
+      transform: rotate(150deg);
+    }
+    22% {
+      transform: rotate(118deg);
+    }
+    32% {
+      transform: rotate(152deg);
+    }
+    42% {
+      transform: rotate(120deg);
+    }
+    52% {
+      transform: rotate(150deg);
+    }
+    68% {
+      transform: rotate(125deg);
+    }
+    84% {
+      transform: rotate(50deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  @keyframes robot-arm-swing {
+    0%,
+    100% {
+      transform: rotate(2.5deg);
+    }
+    50% {
+      transform: rotate(-3.5deg);
+    }
+  }
+  .robot-eye {
+    transition: transform 0.09s ease;
+    animation: robot-eye-glow 2.1s ease-in-out infinite;
+  }
+  .robot-eye--blink {
+    transform: scaleY(0.1);
+  }
+  @keyframes robot-eye-glow {
+    0%,
+    100% {
+      filter: brightness(1) drop-shadow(0 0 2px rgba(255, 214, 110, 0.5));
+    }
+    50% {
+      filter: brightness(1.35) drop-shadow(0 0 7px rgba(255, 214, 110, 0.9));
+    }
+  }
+
+  /* 3D welcome speech bubble — says hi beside the head, points the visitor
+     downward, and carries the voice-mode button. The rig is the size
+     container, so every inner size (cqw) scales with the robot on both mounts. */
+  .robot-rig {
+    container-type: inline-size;
+  }
+  .robot-bubble {
+    position: absolute;
+    z-index: 7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.9cqw 2.1cqw 2.1cqw;
+    color: #eae7f7;
+    background: linear-gradient(160deg, rgba(32, 25, 52, 0.94), rgba(15, 11, 26, 0.94));
+    border: 1px solid rgba(139, 92, 246, 0.45);
+    border-radius: 2.3cqw;
+    box-shadow:
+      0 10px 30px rgba(5, 2, 15, 0.5),
+      0 0 22px rgba(139, 92, 246, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(6px);
+    transform: perspective(700px) rotateY(-11deg) rotateX(4deg);
+    transform-origin: 15% 85%;
+    animation:
+      robot-bubble-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+      robot-bubble-float 3.6s ease-in-out 0.5s infinite;
+    pointer-events: none;
+  }
+  /* tail pointing down-left toward the head */
+  .robot-bubble::after {
+    content: '';
+    position: absolute;
+    left: 11%;
+    bottom: -1.05cqw;
+    width: 2.3cqw;
+    height: 2.3cqw;
+    background: rgba(15, 11, 26, 0.94);
+    border-left: 1px solid rgba(139, 92, 246, 0.45);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.45);
+    border-bottom-left-radius: 0.4cqw;
+    transform: rotate(-45deg);
+  }
+  .robot-bubble p {
+    margin: 0;
+    font-size: clamp(9px, 2.1cqw, 13px);
+    line-height: 1.35;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+  .robot-bubble-chevrons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    margin-top: 1cqw;
+    color: #a78bfa;
+  }
+  .robot-bubble-chevrons span {
+    width: clamp(6px, 2cqw, 12px);
+    height: clamp(6px, 2cqw, 12px);
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    animation: robot-chevron 1.5s ease-in-out infinite;
+  }
+  .robot-bubble-chevrons span + span {
+    margin-top: -0.58cqw;
+    animation-delay: 0.22s;
+  }
+  .robot-voice-btn {
+    position: absolute;
+    top: -1.6cqw;
+    right: -1.6cqw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(22px, 5cqw, 34px);
+    height: clamp(22px, 5cqw, 34px);
+    color: #fff;
+    background: linear-gradient(140deg, #8b5cf6, #6d28d9);
+    border: 1px solid rgba(196, 181, 253, 0.55);
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.45);
+    cursor: pointer;
+    pointer-events: auto; /* ancestors are pointer-events-none; keep it clickable */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .robot-voice-btn:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+  }
+  .robot-voice-btn:focus-visible {
+    outline: 2px solid #c4b5fd;
+    outline-offset: 2px;
+  }
+  .robot-voice-btn svg {
+    width: 55%;
+    height: 55%;
+  }
+  .robot-voice-btn[data-on] {
+    animation: robot-voice-pulse 1.1s ease-out infinite;
+  }
+  @keyframes robot-bubble-in {
+    0% {
+      opacity: 0;
+      transform: perspective(700px) rotateY(-32deg) rotateX(12deg) scale(0.6);
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(700px) rotateY(-11deg) rotateX(4deg) scale(1);
+    }
+  }
+  @keyframes robot-bubble-float {
+    0%,
+    100% {
+      transform: perspective(700px) rotateY(-11deg) rotateX(4deg) translateY(0);
+    }
+    50% {
+      transform: perspective(700px) rotateY(-9deg) rotateX(3deg) translateY(-0.8cqw);
+    }
+  }
+  @keyframes robot-chevron {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: rotate(45deg) translate(0, 0);
+    }
+    50% {
+      opacity: 1;
+      transform: rotate(45deg) translate(0.6cqw, 0.6cqw);
+    }
+  }
+  @keyframes robot-voice-pulse {
+    0% {
+      box-shadow:
+        0 4px 14px rgba(109, 40, 217, 0.45),
+        0 0 0 0 rgba(139, 92, 246, 0.55);
+    }
+    100% {
+      box-shadow:
+        0 4px 14px rgba(109, 40, 217, 0.45),
+        0 0 0 2cqw rgba(139, 92, 246, 0);
+    }
+  }
+
   /* Typewriter caret */
   .type-caret {
     display: inline-block;
@@ -200,6 +642,22 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .type-caret {
+    animation: none;
+  }
+  /* Reduced motion: no drifting canvas — static aurora fallback only */
+  .cinematic-bg canvas { display: none; }
+  .cinematic-bg { mask-image: none; -webkit-mask-image: none; opacity: 1; }
+  .cinematic-fallback { opacity: 1; }
+  .robot-breathe,
+  .robot-head,
+  .robot-ant--l,
+  .robot-ant--r,
+  .robot-arm--l,
+  .robot-arm--r,
+  .robot-eye,
+  .robot-bubble,
+  .robot-bubble-chevrons span,
+  .robot-voice-btn[data-on] {
     animation: none;
   }
 }
@@ -335,6 +793,28 @@ html.light .text-gradient {
   background-clip: text;
 }
 
+/* Robot welcome bubble: white surface, ink text, vivid violet accents */
+html.light .robot-bubble {
+  color: #2c2350;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(242, 239, 255, 0.96));
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow:
+    0 10px 30px rgba(76, 29, 149, 0.16),
+    0 0 18px rgba(124, 58, 237, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+html.light .robot-bubble::after {
+  background: rgba(242, 239, 255, 0.96);
+  border-left-color: rgba(124, 58, 237, 0.35);
+  border-bottom-color: rgba(124, 58, 237, 0.35);
+}
+html.light .robot-bubble p {
+  text-shadow: none;
+}
+html.light .robot-bubble-chevrons {
+  color: #7c3aed;
+}
+
 /* Hero vignette -> light haze */
 html.light .hero-vignette {
   background: radial-gradient(ellipse at center, transparent 0%, rgba(246, 246, 248, 0.5) 78%, #f6f6f8 100%) !important;
@@ -348,6 +828,12 @@ html.light .grid-overlay {
     linear-gradient(90deg, rgba(24, 24, 27, 0.05) 1px, transparent 1px);
 }
 html.light .noise-overlay { display: none; }
+
+/* Cinematic background: hide the animated canvas in light mode and show the
+   soft aurora fallback instead (keeps the page calm on white surfaces) */
+html.light .cinematic-bg canvas { display: none; }
+html.light .cinematic-bg { opacity: 1; mask-image: none; -webkit-mask-image: none; }
+html.light .cinematic-fallback { opacity: 1; }
 
 /* Glows soften so they don't look like smudges on white */
 html.light .shadow-glow { box-shadow: 0 0 35px -10px rgba(109, 40, 217, 0.3); }
@@ -389,6 +875,7 @@ html[dir='rtl'] .marquee-track {
   .aura,
   .grid-overlay,
   .noise-overlay,
+  .cinematic-bg,
   .hero-vignette,
   .type-caret,
   .connector,

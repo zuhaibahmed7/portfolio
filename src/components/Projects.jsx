@@ -233,6 +233,7 @@ function ProjectCard({ project, delay = 0, howOpen, toggleHow }) {
 function QuickCard({ project, delay = 0 }) {
   return (
     <Reveal delay={delay} className="h-full">
+      <CardTilt intensity={6} className="h-full">
       <article className="glass-card group flex h-full flex-col gap-4 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -259,6 +260,7 @@ function QuickCard({ project, delay = 0 }) {
           ))}
         </div>
       </article>
+      </CardTilt>
     </Reveal>
   );
 }
