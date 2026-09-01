@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { ArrowUpRight, BookOpen, ChevronDown, Github, Play, Sparkles } from 'lucide-react';
 import { projects, socials } from '../data/content.js';
 import { useView } from '../context/ViewContext.jsx';
@@ -10,6 +11,7 @@ import RadialStat from './RadialStat.jsx';
 import Modal from './Modal.jsx';
 import CaseStudyModal from './CaseStudyModal.jsx';
 import CardTilt from './CardTilt.jsx';
+import { Card3D, HorizontalCarousel, DepthStack } from './MotionDesign.jsx';
 import { track } from '../analytics.js';
 
 /* Mini diagram of the ResearchPilot pipeline shown in the featured card's
@@ -75,79 +77,87 @@ function HowItWorks({ variant, open, onToggle }) {
   );
 }
 
-/* Featured hero card — links now open the embedded demo + case study modals */
+/* Featured hero card — 3D rotation with edge glow and depth shadows */
 function FeaturedProject({ project, onDemo, onCase, howOpen, toggleHow }) {
   return (
     <Reveal>
-      <CardTilt intensity={8}>
-      <article className="glass-card--border-gradient glass-card overflow-hidden rounded-3xl transition-all duration-500 hover:-translate-y-1.5 hover:shadow-glow">
-        <div className="grid lg:grid-cols-2">
-          <div className="p-7 sm:p-10">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-accent px-3.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-white shadow-glow">
-                <Sparkles size={12} />
-                Featured
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-                Microsoft Agents League · Reasoning Agents track
-              </span>
+      <Card3D
+        rotateY={-3}
+        glowColor="#7C3AED"
+        glowIntensity={0.4}
+        shadowDepth={24}
+        className="w-full"
+      >
+        <CardTilt intensity={8}>
+        <article className="glass-card--border-gradient glass-card overflow-hidden rounded-3xl transition-all duration-500 hover:-translate-y-1.5 hover:shadow-glow">
+          <div className="grid lg:grid-cols-2">
+            <div className="p-7 sm:p-10">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-accent px-3.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-white shadow-glow">
+                  <Sparkles size={12} />
+                  Featured
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                  Microsoft Agents League · Reasoning Agents track
+                </span>
+              </div>
+
+              <h3 className="mt-5 font-display text-2xl font-bold text-ink sm:text-3xl">
+                {project.title} <span className="text-gradient">— {project.subtitle}</span>
+              </h3>
+
+              <ul className="mt-6 space-y-3.5">
+                {project.bullets.map((b) => (
+                  <li key={b} className="flex gap-3 text-sm leading-relaxed text-muted">
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-accent" aria-hidden="true" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Animated architecture diagram expander */}
+              <div className="mt-6">
+                <HowItWorks variant="researchpilot" open={howOpen} onToggle={toggleHow} />
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {project.tech.map((t, i) => (
+                  <Pill key={t} index={i}>
+                    {t}
+                  </Pill>
+                ))}
+              </div>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                {/* Embedded live demo modal */}
+                <button type="button" onClick={onDemo} className="btn-primary !px-6 !py-2.5">
+                  <Play size={15} strokeWidth={2.2} />
+                  Try it live
+                </button>
+                {/* Case study modal */}
+                <button type="button" onClick={onCase} className="btn-ghost !px-6 !py-2.5">
+                  <BookOpen size={15} strokeWidth={2} />
+                  Read full case study
+                </button>
+                <a
+                  href={socials.github.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn-ghost !px-5 !py-2.5"
+                  aria-label={`${project.title} on GitHub`}
+                >
+                  <Github size={15} strokeWidth={2} />
+                </a>
+              </div>
             </div>
 
-            <h3 className="mt-5 font-display text-2xl font-bold text-ink sm:text-3xl">
-              {project.title} <span className="text-gradient">— {project.subtitle}</span>
-            </h3>
-
-            <ul className="mt-6 space-y-3.5">
-              {project.bullets.map((b) => (
-                <li key={b} className="flex gap-3 text-sm leading-relaxed text-muted">
-                  <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-accent" aria-hidden="true" />
-                  {b}
-                </li>
-              ))}
-            </ul>
-
-            {/* Animated architecture diagram expander (Feature #2) */}
-            <div className="mt-6">
-              <HowItWorks variant="researchpilot" open={howOpen} onToggle={toggleHow} />
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.tech.map((t, i) => (
-                <Pill key={t} index={i}>
-                  {t}
-                </Pill>
-              ))}
-            </div>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              {/* Embedded live demo modal (Feature #3) */}
-              <button type="button" onClick={onDemo} className="btn-primary !px-6 !py-2.5">
-                <Play size={15} strokeWidth={2.2} />
-                Try it live
-              </button>
-              {/* Case study modal (Feature #7) */}
-              <button type="button" onClick={onCase} className="btn-ghost !px-6 !py-2.5">
-                <BookOpen size={15} strokeWidth={2} />
-                Read full case study
-              </button>
-              <a
-                href={socials.github.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="btn-ghost !px-5 !py-2.5"
-                aria-label={`${project.title} on GitHub`}
-              >
-                <Github size={15} strokeWidth={2} />
-              </a>
+            <div className="relative p-3 sm:p-4 lg:p-5">
+              <AgentPipeline />
             </div>
           </div>
-
-          <div className="relative p-3 sm:p-4 lg:p-5">
-            <AgentPipeline />
-          </div>
-        </div>
-      </article>
-    </CardTilt>
+        </article>
+        </CardTilt>
+      </Card3D>
     </Reveal>
   );
 }
@@ -166,101 +176,119 @@ function MetricsDashboard() {
   );
 }
 
-/* Standard glass project card */
+/* Standard glass project card — 3D with depth shadows and edge glow */
 function ProjectCard({ project, delay = 0, howOpen, toggleHow }) {
   const isAgro = project.id === 'agrovision';
-  // AgroVision's first bullet (the accuracy numbers) is replaced by the gauges
   const bullets = isAgro ? project.bullets.slice(1) : project.bullets;
+
+  // Alternate glow colors for visual variety
+  const glowColors = ['#7C3AED', '#22D3EE', '#EC4899'];
+  const glowColor = glowColors[projects.indexOf(project) % 3];
 
   return (
     <Reveal delay={delay} className="h-full">
-      <CardTilt intensity={6}>
-      <article className="glass-card group flex h-full flex-col rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow sm:p-7">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-accent-cyan">
-              {project.title}
-            </h3>
-            <p className="mt-0.5 text-xs text-muted">{project.subtitle}</p>
-          </div>
-          <a
-            href={socials.github.href}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={`${project.title} on GitHub`}
-            className="rounded-lg p-1.5 text-muted transition-all duration-300 hover:scale-110 hover:text-ink"
-          >
-            <Github size={17} strokeWidth={1.8} />
-          </a>
-        </div>
-
-        <ul className="mt-5 flex-1 space-y-2.5">
-          {bullets.map((b) => (
-            <li key={b} className="flex gap-2.5 text-[13px] leading-relaxed text-muted">
-              <span
-                className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-accent-cyan/70 transition-colors duration-300 group-hover:bg-accent-cyan"
-                aria-hidden="true"
-              />
-              {b}
-            </li>
-          ))}
-        </ul>
-
-        {/* AgroVision: animated accuracy gauges + its linear architecture diagram */}
-        {isAgro && (
-          <div className="mt-1">
-            <MetricsDashboard />
-            <div className="mt-4">
-              <HowItWorks variant="agrovision" open={howOpen} onToggle={toggleHow} />
+      <Card3D
+        glowColor={glowColor}
+        glowIntensity={0.25}
+        shadowDepth={18}
+        className="h-full"
+      >
+        <CardTilt intensity={6}>
+        <article className="glass-card group flex h-full flex-col rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow sm:p-7">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-accent-cyan">
+                {project.title}
+              </h3>
+              <p className="mt-0.5 text-xs text-muted">{project.subtitle}</p>
             </div>
+            <a
+              href={socials.github.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${project.title} on GitHub`}
+              className="rounded-lg p-1.5 text-muted transition-all duration-300 hover:scale-110 hover:text-ink"
+            >
+              <Github size={17} strokeWidth={1.8} />
+            </a>
           </div>
-        )}
 
-        <div className="mt-6 flex flex-wrap gap-1.5">
-          {project.tech.map((t) => (
-            <span key={t} className="pill !px-2.5 !py-0.5 !text-[11px]">
-              {t}
-            </span>
-          ))}
-        </div>
-      </article>
-      </CardTilt>
+          <ul className="mt-5 flex-1 space-y-2.5">
+            {bullets.map((b) => (
+              <li key={b} className="flex gap-2.5 text-[13px] leading-relaxed text-muted">
+                <span
+                  className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-accent-cyan/70 transition-colors duration-300 group-hover:bg-accent-cyan"
+                  aria-hidden="true"
+                />
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          {/* AgroVision: animated accuracy gauges + its linear architecture diagram */}
+          {isAgro && (
+            <div className="mt-1">
+              <MetricsDashboard />
+              <div className="mt-4">
+                <HowItWorks variant="agrovision" open={howOpen} onToggle={toggleHow} />
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6 flex flex-wrap gap-1.5">
+            {project.tech.map((t) => (
+              <span key={t} className="pill !px-2.5 !py-0.5 !text-[11px]">
+                {t}
+              </span>
+            ))}
+          </div>
+        </article>
+        </CardTilt>
+      </Card3D>
     </Reveal>
   );
 }
 
-/* Quick View card — title / tech / one-liner only (Feature #5) */
-function QuickCard({ project, delay = 0 }) {
+/* Quick View card — depth stacked with glow */
+function QuickCard({ project, delay = 0, stackIndex = 0 }) {
+  const glowColors = ['#7C3AED', '#22D3EE', '#EC4899'];
   return (
     <Reveal delay={delay} className="h-full">
-      <CardTilt intensity={6} className="h-full">
-      <article className="glass-card group flex h-full flex-col gap-4 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-accent-cyan">
-              {project.title}
-            </h3>
-            <p className="mt-1 text-[13px] leading-snug text-muted">{project.subtitle}</p>
+      <Card3D
+        glowColor={glowColors[stackIndex % 3]}
+        glowIntensity={0.3}
+        shadowDepth={14}
+        className="h-full"
+      >
+        <CardTilt intensity={6} className="h-full">
+        <article className="glass-card group flex h-full flex-col gap-4 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:border-accent-violet/40 hover:shadow-glow">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-accent-cyan">
+                {project.title}
+              </h3>
+              <p className="mt-1 text-[13px] leading-snug text-muted">{project.subtitle}</p>
+            </div>
+            <a
+              href={socials.github.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${project.title} on GitHub`}
+              className="rounded-lg p-1.5 text-muted transition-all duration-300 hover:scale-110 hover:text-ink"
+            >
+              <Github size={17} strokeWidth={1.8} />
+            </a>
           </div>
-          <a
-            href={socials.github.href}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={`${project.title} on GitHub`}
-            className="rounded-lg p-1.5 text-muted transition-all duration-300 hover:scale-110 hover:text-ink"
-          >
-            <Github size={17} strokeWidth={1.8} />
-          </a>
-        </div>
-        <div className="mt-auto flex flex-wrap gap-1.5">
-          {project.tech.slice(0, 4).map((t) => (
-            <span key={t} className="pill !px-2.5 !py-0.5 !text-[11px]">
-              {t}
-            </span>
-          ))}
-        </div>
-      </article>
-      </CardTilt>
+          <div className="mt-auto flex flex-wrap gap-1.5">
+            {project.tech.slice(0, 4).map((t) => (
+              <span key={t} className="pill !px-2.5 !py-0.5 !text-[11px]">
+                {t}
+              </span>
+            ))}
+          </div>
+        </article>
+        </CardTilt>
+      </Card3D>
     </Reveal>
   );
 }
@@ -341,11 +369,43 @@ export default function Projects() {
         {/* Keyed by view so the quick/detailed swap crossfades smoothly */}
         <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
           {isQuick ? (
-            /* Quick View: top 3, title + tech + one-liner */
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.slice(0, 3).map((p, i) => (
-                <QuickCard key={p.id} project={p} delay={i * 0.08} />
-              ))}
+            /* Quick View: horizontal carousel with 3D cards */
+            <div className="mt-12">
+              <HorizontalCarousel
+                items={projects.slice(0, 3).map((p, i) => ({
+                  id: p.id,
+                  glowColor: ['#7C3AED', '#22D3EE', '#EC4899'][i % 3],
+                  content: (
+                    <article className="flex flex-col gap-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h3 className="font-display text-lg font-semibold text-ink">
+                            {p.title}
+                          </h3>
+                          <p className="mt-1 text-[13px] leading-snug text-muted">{p.subtitle}</p>
+                        </div>
+                        <a
+                          href={socials.github.href}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="rounded-lg p-1.5 text-muted transition-all duration-300 hover:scale-110 hover:text-ink"
+                        >
+                          <Github size={17} strokeWidth={1.8} />
+                        </a>
+                      </div>
+                      <div className="mt-auto flex flex-wrap gap-1.5">
+                        {p.tech.slice(0, 4).map((t) => (
+                          <span key={t} className="pill !px-2.5 !py-0.5 !text-[11px]">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </article>
+                  ),
+                }))}
+                itemWidth={320}
+                gap={20}
+              />
             </div>
           ) : (
             <>
