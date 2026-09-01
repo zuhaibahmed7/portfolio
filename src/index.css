@@ -478,6 +478,11 @@ body {
     }
   }
 
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
   /* 3D welcome speech bubble — says hi beside the head, points the visitor
      downward, and carries the voice-mode button. The rig is the size
      container, so every inner size (cqw) scales with the robot on both mounts. */
