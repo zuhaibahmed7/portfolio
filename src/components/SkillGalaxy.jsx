@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 import { learningByCategory, skillCategories } from '../data/content.js';
 
 const CATEGORY_COLORS = ['#7C3AED', '#22D3EE', '#EC4899', '#A78BFA', '#67E8F9', '#F9A8D4', '#F5F5F7'];
@@ -40,31 +41,11 @@ function buildNodes() {
   return nodes;
 }
 
-function Node({ node, hoveredKey, onHover }) {
-  const ref = useRef();
-  useFrame(() => {
-    if (!ref.current) return;
-    const target = hoveredKey === node.key ? 2.1 : 1;
-    ref.current.scale.setScalar(ref.current.scale.x + (target - ref.current.scale.x) * 0.18);
-  });
-  return (
-    <mesh
-      ref={ref}
-      position={node.position}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        onHover(node);
-      }}
-      onPointerOut={() => onHover(null)}
-    >
-      <sphereGeometry args={[node.size, 12, 12]} />
-      <meshBasicMaterial color={node.color} transparent opacity={0.9} />
-    </mesh>
-  );
-}
+const SHARED_SPHERE = new THREE.SphereGeometry(1, 10, 10);
 
 function Galaxy({ hoveredKey, onHover }) {
   const group = useRef();
+  const nodeRefs = useRef([]);
   const nodes = useMemo(buildNodes, []);
 
   useFrame((_, delta) => {
@@ -73,20 +54,47 @@ function Galaxy({ hoveredKey, onHover }) {
     // Base tilt faces the disc toward the camera; mouse adds parallax
     group.current.rotation.x += (0.85 + mouse.y * 0.12 - group.current.rotation.x) * 0.04;
     group.current.rotation.z += (mouse.x * -0.06 - group.current.rotation.z) * 0.04;
+
+    // Single loop updates hovered/settling node scales instead of 40+ per-node useFrame hooks
+    for (let i = 0; i < nodes.length; i++) {
+      const mesh = nodeRefs.current[i];
+      if (!mesh) continue;
+      const node = nodes[i];
+      const target = node.size * (hoveredKey === node.key ? 2.1 : 1);
+      const cur = mesh.scale.x;
+      if (Math.abs(target - cur) > 0.001) {
+        mesh.scale.setScalar(cur + (target - cur) * 0.18);
+      }
+    }
   });
 
   return (
     <group ref={group}>
       <mesh>
-        <sphereGeometry args={[0.32, 24, 24]} />
+        <sphereGeometry args={[0.32, 20, 20]} />
         <meshBasicMaterial color="#7C3AED" transparent opacity={0.85} />
       </mesh>
       <mesh>
         <icosahedronGeometry args={[0.62, 1]} />
         <meshBasicMaterial color="#22D3EE" wireframe transparent opacity={0.25} />
       </mesh>
-      {nodes.map((n) => (
-        <Node key={n.key} node={n} hoveredKey={hoveredKey} onHover={onHover} />
+      {nodes.map((n, i) => (
+        <mesh
+          key={n.key}
+          ref={(el) => {
+            nodeRefs.current[i] = el;
+          }}
+          geometry={SHARED_SPHERE}
+          scale={n.size}
+          position={n.position}
+          onPointerOver={(e) => {
+            e.stopPropagation();
+            onHover(n);
+          }}
+          onPointerOut={() => onHover(null)}
+        >
+          <meshBasicMaterial color={n.color} transparent opacity={0.9} />
+        </mesh>
       ))}
     </group>
   );
@@ -94,20 +102,45 @@ function Galaxy({ hoveredKey, onHover }) {
 
 export default function SkillGalaxy() {
   const [hovered, setHovered] = useState(null);
+  const [inView, setInView] = useState(true);
+  const wrapRef = useRef(null);
 
   useEffect(() => {
-    const onMove = (e) => {
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    window.addEventListener('pointermove', onMove, { passive: true });
-    return () => window.removeEventListener('pointermove', onMove);
+    const el = wrapRef.current;
+    if (!el) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '150px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!inView) return undefined;
+    let winW = window.innerWidth || 1;
+    let winH = window.innerHeight || 1;
+    const onResize = () => {
+      winW = window.innerWidth || 1;
+      winH = window.innerHeight || 1;
+    };
+    const onMove = (e) => {
+      mouse.x = (e.clientX / winW) * 2 - 1;
+      mouse.y = (e.clientY / winH) * 2 - 1;
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('pointermove', onMove);
+    };
+  }, [inView]);
+
   return (
-    <div className="relative h-full w-full">
+    <div ref={wrapRef} className="relative h-full w-full">
       <Canvas
-        dpr={[1, 1.75]}
+        frameloop={inView ? 'always' : 'never'}
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0.8, 8], fov: 50 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       >

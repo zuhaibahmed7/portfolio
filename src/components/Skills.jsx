@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Bot, BrainCircuit, Code2, Container, Database, PenTool, Server } from 'lucide-react';
 import { learningByCategory, skillCategories } from '../data/content.js';
@@ -29,15 +29,27 @@ export default function Skills() {
   const reduced = useReducedMotion();
   const { isLight } = useTheme();
   const [mountGalaxy, setMountGalaxy] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     if (reduced || isLight || window.innerWidth < 768) return undefined;
-    const t2 = setTimeout(() => setMountGalaxy(true), 250);
-    return () => clearTimeout(t2);
+    const el = sectionRef.current;
+    if (!el) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMountGalaxy(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, [reduced, isLight]);
 
   return (
-    <section id="skills" className="relative overflow-hidden py-28 sm:py-32" aria-label="Skills">
+    <section ref={sectionRef} id="skills" className="relative overflow-hidden py-28 sm:py-32" aria-label="Skills">
       <div className="aura -right-40 top-24 h-[420px] w-[420px] bg-accent-cyan/70" aria-hidden="true" />
 
       <div className="container-x relative">

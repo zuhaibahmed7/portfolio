@@ -116,6 +116,7 @@ export async function answerChat(rawHistory) {
       signal: controller.signal,
     });
 
+    const data = res.ok ? await res.json().catch(() => null) : null;
     if (!res.ok || typeof data?.choices?.[0]?.message?.content !== 'string') {
       // Provider failed → degrade gracefully to the local brain
       const local = localAnswer(history);

@@ -29,13 +29,18 @@ export default function ScrollRail() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.3 });
 
-  // Recompute which sections exist after Quick/Detailed swaps finish
-  // (SectionGate unmounts happen ~300ms into the exit animation)
+  // Recompute which sections exist after Quick/Detailed swaps or lazy section mounts
   useEffect(() => {
-    const t = setTimeout(() => {
-      setPresent(SECTIONS.filter((s) => document.getElementById(s.id)));
-    }, 350);
-    return () => clearTimeout(t);
+    const sync = () => setPresent(SECTIONS.filter((s) => document.getElementById(s.id)));
+    sync();
+    const t = setTimeout(sync, 350);
+    const main = document.getElementById('main');
+    const mo = main ? new MutationObserver(sync) : null;
+    if (mo && main) mo.observe(main, { childList: true, subtree: true });
+    return () => {
+      clearTimeout(t);
+      mo?.disconnect();
+    };
   }, [view]);
 
   useEffect(() => {

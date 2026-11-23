@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowUpRight, BookOpen, ChevronDown, Github, Play, Sparkles } from 'lucide-react';
@@ -9,10 +9,11 @@ import { Pill, Reveal, SectionHeading } from './ui.jsx';
 import ArchitectureDiagram from './ArchitectureDiagram.jsx';
 import RadialStat from './RadialStat.jsx';
 import Modal from './Modal.jsx';
-import CaseStudyModal from './CaseStudyModal.jsx';
 import CardTilt from './CardTilt.jsx';
 import { Card3D, HorizontalCarousel, DepthStack } from './MotionDesign.jsx';
 import { track } from '../analytics.js';
+
+const CaseStudyModal = lazy(() => import('./CaseStudyModal.jsx'));
 
 /* Mini diagram of the ResearchPilot pipeline shown in the featured card's
    visual panel (kept compact — the full animated diagram is in the
@@ -344,8 +345,13 @@ export default function Projects() {
   const { isQuick, view } = useView();
   const t = useTranslations();
   const [modal, setModal] = useState(null); // 'demo' | 'case' | null
+  const [caseLoaded, setCaseLoaded] = useState(false);
   const [howOpen, setHowOpen] = useState({}); // per-project diagram expanders
   const toggleHow = (id) => setHowOpen((s) => ({ ...s, [id]: !s[id] }));
+
+  useEffect(() => {
+    if (modal === 'case') setCaseLoaded(true);
+  }, [modal]);
 
   const [featured, ...rest] = projects;
 
@@ -435,7 +441,11 @@ export default function Projects() {
         </motion.div>
       </div>
 
-      <CaseStudyModal open={modal === 'case'} onClose={() => setModal(null)} />
+      {caseLoaded && (
+        <Suspense fallback={null}>
+          <CaseStudyModal open={modal === 'case'} onClose={() => setModal(null)} />
+        </Suspense>
+      )}
       <LiveDemoModal open={modal === 'demo'} onClose={() => setModal(null)} />
     </section>
   );

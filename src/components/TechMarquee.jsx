@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Reveal } from './ui.jsx';
 
@@ -205,21 +206,35 @@ const TECH_ITEMS = [
 
 function MarqueeTrack({ items, speed = 40 }) {
   const reduced = useReducedMotion();
+  const trackRef = useRef(null);
+  const [inView, setInView] = useState(true);
   const totalWidth = items.length * 200; // approximate width per item with logo
 
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el || reduced) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '100px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduced]);
+
+  const active = !reduced && inView;
+
   return (
-    <div className="relative flex overflow-hidden py-2">
+    <div ref={trackRef} className="relative flex overflow-hidden py-2">
       {/* Gradient masks on edges for smooth fade */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-base to-transparent sm:w-32" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-base to-transparent sm:w-32" />
 
       <motion.div
-        className="flex gap-5"
-        animate={reduced ? {} : { x: [0, -totalWidth] }}
+        className="flex gap-5 will-change-transform"
+        animate={active ? { x: [0, -totalWidth] } : undefined}
         transition={
-          reduced
-            ? {}
-            : {
+          active
+            ? {
                 x: {
                   repeat: Infinity,
                   repeatType: 'loop',
@@ -227,6 +242,7 @@ function MarqueeTrack({ items, speed = 40 }) {
                   ease: 'linear',
                 },
               }
+            : undefined
         }
       >
         {/* Double the items for seamless loop */}

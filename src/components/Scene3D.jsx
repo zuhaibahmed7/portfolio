@@ -53,7 +53,7 @@ function ParticleField() {
   const group = useRef(null);
   const points = useRef(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const count = isMobile ? 1300 : 2600;
+  const count = isMobile ? 850 : 1600;
 
   const { initial, colors, targets } = useMemo(() => {
     const targets = buildTargets(count);
@@ -196,7 +196,7 @@ function OrbitalRings() {
     <group ref={group}>
       {ringConfigs.map((cfg, i) => (
         <mesh key={i}>
-          <torusGeometry args={[cfg.radius, cfg.tube, 32, 100]} />
+          <torusGeometry args={[cfg.radius, cfg.tube, 8, 64]} />
           <meshBasicMaterial
             color={cfg.color}
             transparent
@@ -230,7 +230,7 @@ function GlowingCore() {
 
   return (
     <mesh ref={mesh} position={[0, 0, -1]}>
-      <sphereGeometry args={[0.6, 32, 32]} />
+      <sphereGeometry args={[0.6, 24, 24]} />
       <MeshDistortMaterial
         color="#7C3AED"
         emissive="#7C3AED"
@@ -252,8 +252,7 @@ function GlowingCore() {
 --------------------------------------------------------------------------- */
 function EnergyBeams() {
   const linesRef = useRef(null);
-  const maxLines = 120;
-  const maxDist = 3.5;
+  const maxLines = 80;
 
   const { positions, colors } = useMemo(() => {
     const pos = new Float32Array(maxLines * 6); // 2 vertices per line
@@ -329,19 +328,31 @@ function EnergyBeams() {
    Mounted lazily by Hero (React.lazy) and skipped for reduced-motion users,
    who get a static CSS aurora fallback instead.
 --------------------------------------------------------------------------- */
-export default function Scene3D() {
+export default function Scene3D({ active = true }) {
   useEffect(() => {
-    const onMove = (e) => {
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+    if (!active) return undefined;
+    let winW = window.innerWidth || 1;
+    let winH = window.innerHeight || 1;
+    const onResize = () => {
+      winW = window.innerWidth || 1;
+      winH = window.innerHeight || 1;
     };
+    const onMove = (e) => {
+      mouse.x = (e.clientX / winW) * 2 - 1;
+      mouse.y = (e.clientY / winH) * 2 - 1;
+    };
+    window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('pointermove', onMove, { passive: true });
-    return () => window.removeEventListener('pointermove', onMove);
-  }, []);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('pointermove', onMove);
+    };
+  }, [active]);
 
   return (
     <Canvas
-      dpr={[1, 1.75]}
+      frameloop={active ? 'always' : 'never'}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0, 9], fov: 55 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       style={{ pointerEvents: 'none' }}

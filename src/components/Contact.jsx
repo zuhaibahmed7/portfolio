@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Facebook, Github, Globe, Instagram, Linkedin, Mail, Phone, Send, Twitter, Youtube } from 'lucide-react';
 import { profile, socials } from '../data/content.js';
@@ -6,8 +6,9 @@ import { useView } from '../context/ViewContext.jsx';
 import { useTranslations } from '../hooks/useTranslations.js';
 import { CopyEmailButton, Magnetic, Reveal, SectionHeading } from './ui.jsx';
 import Modal from './Modal.jsx';
-import BookingFlow from './BookingFlow.jsx';
 import { track } from '../analytics.js';
+
+const BookingFlow = lazy(() => import('./BookingFlow.jsx'));
 
 /* ---------------------------------------------------------------------------
    Contact section — glowing channels, single-path paid Book a Call modal
@@ -322,7 +323,11 @@ export default function Contact() {
         subtitle="Pick a time slot, reserve it, and confirm after payment."
         wide
       >
-        <BookingFlow />
+        {bookOpen && (
+          <Suspense fallback={null}>
+            <BookingFlow />
+          </Suspense>
+        )}
       </Modal>
     </section>
   );

@@ -6,6 +6,10 @@ import { useEffect, useRef, useState } from 'react';
  * The ring scales up over interactive elements (a / button / [data-hover]).
  * Only enabled for fine pointers (desktop) without reduced-motion preference;
  * the native cursor is intentionally kept visible for usability.
+ *
+ * Performance optimizations:
+ * - Avoids reading offsetWidth inside rAF (eliminates 60Hz forced reflows)
+ * - Auto-pauses rAF loop once the ring catches up to the cursor
  */
 export default function CustomCursor() {
   const dotRef = useRef(null);
@@ -21,8 +25,27 @@ export default function CustomCursor() {
     // Mutable target/current positions shared by the rAF loop
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const ring = { x: target.x, y: target.y };
-    let hovering = false;
-    let raf;
+    let ringHalf = 18; // 36px / 2 default; 28 when hovering (56px / 2)
+    let raf = 0;
+
+    const loop = () => {
+      const dx = target.x - ring.x;
+      const dy = target.y - ring.y;
+      ring.x += dx * 0.16;
+      ring.y += dy * 0.16;
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ring.x - ringHalf}px, ${ring.y - ringHalf}px, 0)`;
+      }
+      if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15) {
+        raf = requestAnimationFrame(loop);
+      } else {
+        raf = 0;
+      }
+    };
+
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
 
     const onMove = (e) => {
       target.x = e.clientX;
@@ -30,11 +53,15 @@ export default function CustomCursor() {
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${target.x - 4}px, ${target.y - 4}px, 0)`;
       }
+      wake();
     };
 
     // Grow the ring when entering links/buttons via event delegation
     const onOver = (e) => {
-      hovering = !!e.target.closest('a, button, [data-hover]');
+      const hovering = !!e.target.closest('a, button, [data-hover]');
+      const nextHalf = hovering ? 28 : 18;
+      if (nextHalf === ringHalf) return;
+      ringHalf = nextHalf;
       if (ringRef.current) {
         ringRef.current.style.width = hovering ? '56px' : '36px';
         ringRef.current.style.height = hovering ? '56px' : '36px';
@@ -42,17 +69,7 @@ export default function CustomCursor() {
           ? 'rgba(34,211,238,0.9)'
           : 'rgba(124,58,237,0.55)';
       }
-    };
-
-    const loop = () => {
-      // Lerp factor 0.16 → the ring trails the dot with a smooth ease
-      ring.x += (target.x - ring.x) * 0.16;
-      ring.y += (target.y - ring.y) * 0.16;
-      if (ringRef.current) {
-        const size = ringRef.current.offsetWidth / 2;
-        ringRef.current.style.transform = `translate3d(${ring.x - size}px, ${ring.y - size}px, 0)`;
-      }
-      raf = requestAnimationFrame(loop);
+      wake();
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });
@@ -62,7 +79,7 @@ export default function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
@@ -74,14 +91,14 @@ export default function CustomCursor() {
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[90] h-9 w-9 rounded-full border transition-[width,height,border-color] duration-200 print:hidden"
+        className="pointer-events-none fixed left-0 top-0 z-[90] h-9 w-9 rounded-full border transition-[width,height,border-color] duration-200 will-change-transform print:hidden"
         style={{ borderColor: 'rgba(124,58,237,0.55)' }}
       />
       {/* Center dot */}
       <div
         ref={dotRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[90] h-2 w-2 rounded-full bg-gradient-accent print:hidden"
+        className="pointer-events-none fixed left-0 top-0 z-[90] h-2 w-2 rounded-full bg-gradient-accent will-change-transform print:hidden"
       />
     </>
   );

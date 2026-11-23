@@ -4,7 +4,7 @@ import { education, interests, nowItems, nowUpdated, profile, translations } fro
 import { useView } from '../context/ViewContext.jsx';
 import { useTranslations } from '../hooks/useTranslations.js';
 import { Reveal, SectionHeading } from './ui.jsx';
-import profilePhoto from '../assets/profile.png';
+import profilePhoto from '../assets/profile.webp';
 
 /* "What I'm doing now" card (Feature #9) �?" always visible (both views),
    pulsing live dot signals current momentum. Six items in a 2-column grid
@@ -89,6 +89,7 @@ export default function About() {
                   alt={`Portrait of ${profile.name}`}
                   className="aspect-[4/5] w-full rounded-2xl object-cover"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div className="pointer-events-none absolute inset-x-2 bottom-2 rounded-b-2xl bg-gradient-to-t from-base/90 via-base/30 to-transparent p-5 pt-16">
                   <p className="font-display text-lg font-semibold text-ink">{profile.name}</p>

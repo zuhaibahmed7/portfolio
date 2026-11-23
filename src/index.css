@@ -207,6 +207,10 @@ body {
   }
 
   /* Robot avatar rig: paper-doll part animations */
+  .robot-paused,
+  .robot-paused * {
+    animation-play-state: paused !important;
+  }
   .robot-crop {
     -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
     mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
@@ -214,6 +218,13 @@ body {
   .robot-laptop-fade {
     -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 97%);
     mask-image: linear-gradient(to bottom, #000 80%, transparent 97%);
+  }
+  .robot-breathe,
+  .robot-ant,
+  .robot-arm,
+  .robot-hand--l,
+  .robot-hand--r {
+    will-change: transform;
   }
   .robot-eyelid {
     position: absolute;

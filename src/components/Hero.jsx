@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Download, Facebook, Github, Globe, Instagram, Layers, Linkedin, Mail, Twitter, X, Youtube, Zap } from 'lucide-react';
 import { profile, roles, socials } from '../data/content.js';
@@ -133,6 +133,8 @@ export default function Hero() {
   const t = useTranslations();
   const { isLight } = useTheme();
   const [mountScene, setMountScene] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
+  const heroRef = useRef(null);
 
   // Delay the (heavy) 3D canvas until after the intro + text have painted
   useEffect(() => {
@@ -140,6 +142,17 @@ export default function Hero() {
     const t = setTimeout(() => setMountScene(true), 350);
     return () => clearTimeout(t);
   }, [reduced, isLight]);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el || !mountScene) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => setHeroInView(entry.isIntersecting),
+      { rootMargin: '150px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [mountScene]);
 
   const fade = (delay) => ({
     initial: { opacity: 0, y: reduced ? 0 : 22 },
@@ -158,7 +171,7 @@ export default function Hero() {
   ];
 
   return (
-    <section id="top" className="relative overflow-hidden" aria-label="Intro">
+    <section ref={heroRef} id="top" className="relative overflow-hidden" aria-label="Intro">
       {/* ---------- Background layers ---------- */}
       <div className="grid-overlay absolute inset-0" aria-hidden="true" />
       <div className="aura -left-40 top-1/4 h-[480px] w-[480px] bg-accent-violet" aria-hidden="true" />
@@ -167,7 +180,7 @@ export default function Hero() {
       {mountScene && (
         <div className="absolute inset-0" aria-hidden="true">
           <Suspense fallback={null}>
-            <Scene3D />
+            <Scene3D active={heroInView} />
           </Suspense>
         </div>
       )}
